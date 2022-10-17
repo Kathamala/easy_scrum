@@ -13,14 +13,18 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void login() {
-    print("Log in!");
+  void register() {
+    print("Registered!");
+    print(usernameController.text);
+    print(emailController.text);
+    print(passwordController.text);
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 
   @override
@@ -60,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    "Login",
+                    "Cadastro",
                     style: TextStyle(
                         color: AppColors.black,
                         fontSize: 16,
@@ -89,6 +93,24 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                               },
                             ),
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: "Email",
+                                labelStyle: TextStyle(
+                                    color: Colors.black, fontSize: 10),
+                              ),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 15),
+                              controller: emailController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Insira o seu email.";
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),                            
                             SizedBox(height: 20),
                             TextFormField(
                               obscureText: true,
@@ -110,26 +132,13 @@ class _RegisterPageState extends State<RegisterPage> {
                               },
                             ),
                           ])),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        child: Text("Esqueceu sua senha?",
-                            style: TextStyle(
-                                color: AppColors.black, fontSize: 10)),
-                        onPressed: () {
-                          print("Alterar senha!");
-                        },
-                      ),
-                    ],
-                  ),
                   SizedBox(
                     height: 20,
-                  ),
+                  ),        
                   ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          login();
+                          register();
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -137,38 +146,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           fixedSize: Size(250, 60),
                           shape: StadiumBorder()),
                       child: const Text(
-                        "Entrar",
+                        "Cadastrar",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       )),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Não tem conta?",
-                        style: TextStyle(
-                          color: AppColors.black,
-                          fontSize: 10,
-                        ),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            print("Cadastrar!");
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: AppColors.primaryPurple,
-                          ),
-                          child: const Text(
-                            "Cadastre-se",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                            ),
-                          )),
-                    ],
-                  )
                 ],
               ),
               decoration: BoxDecoration(

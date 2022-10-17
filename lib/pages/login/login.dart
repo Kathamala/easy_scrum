@@ -156,6 +156,8 @@ class _LoginPageState extends State<LoginPage> {
                       ElevatedButton(
                           onPressed: () {
                             print("Cadastrar!");
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => const RegisterPage()));                            
                           },
                           style: ElevatedButton.styleFrom(
                             primary: AppColors.primaryPurple,
