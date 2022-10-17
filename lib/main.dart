@@ -1,25 +1,24 @@
+import 'package:easy_scrum/colors.dart';
 import 'package:easy_scrum/pages/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const LoginPage());
+  runApp(const MyApp());
 }
-/*
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Easy Scrum',
+      theme: ThemeData(primarySwatch: Colors.grey, fontFamily: "Comfortaa"),
+      home: const LoginPage(),
     );
   }
 }
-
+/*
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
