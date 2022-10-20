@@ -5,4 +5,5 @@ class AppColors {
   static Color secondaryGrey = Colors.grey.shade200;
   static Color black = Colors.black;
   static Color white = Colors.white;
+  static Color success = Colors.green;
 }
