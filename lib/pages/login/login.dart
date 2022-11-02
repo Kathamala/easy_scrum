@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary: AppColors.primaryPurple,
+                            backgroundColor: AppColors.primaryPurple,
                             fixedSize: Size(250, 60),
                             shape: StadiumBorder()),
                         child: const Text(
@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                                           const RegisterPage()));
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: AppColors.primaryPurple,
+                              backgroundColor: AppColors.primaryPurple,
                             ),
                             child: const Text(
                               "Cadastre-se",

@@ -263,14 +263,14 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 20)),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary: AppColors
+                                                      style: ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              AppColors
                                                                   .primaryPurple,
-                                                              fixedSize:
-                                                                  Size(250, 60),
-                                                              shape:
-                                                                  StadiumBorder()),
+                                                          fixedSize:
+                                                              Size(250, 60),
+                                                          shape:
+                                                              StadiumBorder()),
                                                       onPressed: () {
                                                         Navigator.pop(context);
                                                         Navigator.pop(context);
@@ -290,7 +290,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: AppColors.primaryPurple,
+                              backgroundColor: AppColors.primaryPurple,
                               fixedSize: Size(250, 60),
                               shape: StadiumBorder()),
                           child: Text(

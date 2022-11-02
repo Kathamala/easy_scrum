@@ -210,7 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                         color: Colors.white,
                                                         fontSize: 20)),
                                                 style: ElevatedButton.styleFrom(
-                                                    primary:
+                                                    backgroundColor:
                                                         AppColors.primaryPurple,
                                                     fixedSize: Size(250, 60),
                                                     shape: StadiumBorder()),
@@ -227,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary: AppColors.primaryPurple,
+                            backgroundColor: AppColors.primaryPurple,
                             fixedSize: Size(250, 60),
                             shape: StadiumBorder()),
                         child: const Text(

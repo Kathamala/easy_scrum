@@ -1,6 +1,7 @@
 // ignore: file_names
 import 'package:easy_scrum/colors.dart';
 import 'package:easy_scrum/pages/home.dart';
+import 'package:easy_scrum/pages/project/project-creation.dart';
 import 'package:flutter/material.dart';
 
 class BottomAppBarEasyScrum extends StatelessWidget {
@@ -43,13 +44,18 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                 onPressed: () {},
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProjectCreationPage()));
+                },
                 child: Icon(
                   Icons.add,
                   color: AppColors.white,
                 ),
                 style: ElevatedButton.styleFrom(
-                    primary: AppColors.primaryPurple,
+                    backgroundColor: AppColors.primaryPurple,
                     shape: const StadiumBorder()),
               ),
               IconButton(
