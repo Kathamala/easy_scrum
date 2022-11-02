@@ -55,7 +55,7 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                   color: AppColors.white,
                 ),
                 style: ElevatedButton.styleFrom(
-                    primary: AppColors.primaryPurple,
+                    backgroundColor: AppColors.primaryPurple,
                     shape: const StadiumBorder()),
               ),
               IconButton(

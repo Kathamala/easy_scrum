@@ -2,7 +2,7 @@
 import 'package:easy_scrum/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/pages/login/login.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                     //projects
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: AppColors.secondaryGrey,
+                          backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(270, 20)),
                       onPressed: () {},
                       child: Align(
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: AppColors.secondaryGrey,
+                          backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(270, 20)),
                       onPressed: () {},
                       child: Align(
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: AppColors.secondaryGrey,
+                          backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(270, 20)),
                       onPressed: () {},
                       child: Align(
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                     //reunions
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: AppColors.secondaryGrey,
+                          backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(270, 20)),
                       onPressed: () {},
                       child: Row(
@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: AppColors.secondaryGrey,
+                          backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(270, 20)),
                       onPressed: () {},
                       child: Row(
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: AppColors.secondaryGrey,
+                          backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(270, 20)),
                       onPressed: () {},
                       child: Row(
