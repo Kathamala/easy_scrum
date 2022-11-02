@@ -15,10 +15,10 @@ class ProjectCreationPage extends StatefulWidget {
 class _ProjectCreationPageState extends State<ProjectCreationPage> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController clienteController = TextEditingController();
-  TextEditingController dataController = TextEditingController();
   TextEditingController prazoController = TextEditingController();
   TextEditingController duracaoSprintController = TextEditingController();
   TextEditingController quantidadeTimesController = TextEditingController();
+  DateTime date = DateTime.now();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -30,7 +30,7 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
   void _createProject() {
     print("Nome: " + nomeController.text + "\n");
     print("Cliente: " + clienteController.text + "\n");
-    print("Data de início: " + dataController.text + "\n");
+    print("Data de início: " + date.toString() + "\n");
     print("Prazo: " + prazoController.text + "\n");
     print("Duração do sprint: " + duracaoSprintController.text + "\n");
     print("Quantidade de times: " + quantidadeTimesController.text + "\n");
@@ -40,10 +40,10 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
   void _resetCampos() {
     nomeController = TextEditingController();
     clienteController = TextEditingController();
-    dataController = TextEditingController();
     prazoController = TextEditingController();
     duracaoSprintController = TextEditingController();
     quantidadeTimesController = TextEditingController();
+    setState(() => date = DateTime.now());
     formKey.currentState!.reset();
   }
 
@@ -92,21 +92,38 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                 },
               ),
               Padding(padding: EdgeInsets.only(top: 10.0)),
-              TextFormField(
-                keyboardType: TextInputType.datetime,
-                decoration: InputDecoration(
-                    labelText: "Data de início",
-                    labelStyle: TextStyle(color: Colors.black)),
-                textAlign: TextAlign.left,
-                style: TextStyle(color: Colors.black, fontSize: 16.0),
-                controller: dataController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Insira a data de início do projeto";
-                  } else {
-                    return null;
-                  }
-                },
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text("Data de início:",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 16.0)),
+                  ),
+                  Expanded(
+                    child: Text("${date.day}/${date.month}/${date.year}",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 18.0)),
+                  ),
+                  //const SizedBox(height: 16),
+                  ElevatedButton(
+                      onPressed: () async {
+                        DateTime? newDate = await showDatePicker(
+                          context: context,
+                          initialDate: date,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        );
+
+                        if (newDate == null) {
+                          return;
+                        }
+
+                        setState(() => date = newDate);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple),
+                      child: Icon(Icons.edit_calendar, color: Colors.white))
+                ],
               ),
               Padding(padding: EdgeInsets.only(top: 10.0)),
               TextFormField(
