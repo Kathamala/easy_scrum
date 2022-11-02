@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 import 'package:easy_scrum/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
-import 'package:easy_scrum/pages/login/login.dart';
-//import 'package:flutter/cupertino.dart';
+//import 'package:easy_scrum/pages/login/login.dart';
+import 'package:easy_scrum/pages/project/project-details.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,13 +25,15 @@ class _HomePageState extends State<HomePage> {
 
   void openProject(int projectId) {
     print("Opening project " + projectId.toString());
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const ProjectDetailsPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     final cardProjetos = Card(
         elevation: 4.0,
-        child: Container(
+        child: SizedBox(
           height: 320,
           width: 320,
           child: Column(
@@ -52,7 +54,9 @@ class _HomePageState extends State<HomePage> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(270, 20)),
-                      onPressed: () {},
+                      onPressed: () {
+                        openProject(1);
+                      },
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text("Easy Scrum",
@@ -66,7 +70,9 @@ class _HomePageState extends State<HomePage> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(270, 20)),
-                      onPressed: () {},
+                      onPressed: () {
+                        openProject(1);
+                      },
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text("Projeto 0",
@@ -80,7 +86,9 @@ class _HomePageState extends State<HomePage> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(270, 20)),
-                      onPressed: () {},
+                      onPressed: () {
+                        openProject(1);
+                      },
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text("Projeto teste",
@@ -107,7 +115,7 @@ class _HomePageState extends State<HomePage> {
 
     final cardReunioes = Card(
         elevation: 4.0,
-        child: Container(
+        child: SizedBox(
           height: 320,
           width: 320,
           child: Column(
@@ -284,7 +292,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: BottomAppBarEasyScrum(),
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(left: 40, top: 40),
+            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
