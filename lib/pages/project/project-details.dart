@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 import 'package:easy_scrum/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/pages/project/project-edit.dart';
 import 'package:flutter/material.dart';
 
 class ProjectDetailsPage extends StatefulWidget {
@@ -67,15 +68,16 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         textAlign: TextAlign.left,
                         style: TextStyle(fontSize: 16.0)),
                     Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 30, 15, 10),
+                        padding: const EdgeInsets.fromLTRB(15, 30, 15, 10),
                         child: SizedBox(
                             height: 50.0,
                             child: ElevatedButton(
                               onPressed: () {
-                                /*Navigator.push(
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const ProjectEditPage()));*/
+                                        builder: (context) =>
+                                            const ProjectEditPage()));
                               },
                               child: Text(
                                 "Editar projeto",
@@ -113,7 +115,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondaryGrey,
-                          fixedSize: Size(270, 20)),
+                          fixedSize: Size(242, 20)),
                       onPressed: () {
                         /*Navigator.push(
                             context,
@@ -125,7 +127,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           Icons.list,
                           size: 28,
                         ),
-                        Text("                Atividades",
+                        Text("              Atividades",
                             //textAlign: TextAlign.right,
                             style: TextStyle(
                                 color: AppColors.black,
@@ -136,7 +138,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondaryGrey,
-                          fixedSize: Size(270, 20)),
+                          fixedSize: Size(242, 20)),
                       onPressed: () {
                         /*Navigator.push(
                             context,
@@ -148,7 +150,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           Icons.people,
                           size: 28,
                         ),
-                        Text("               Integrantes",
+                        Text("             Integrantes",
                             //textAlign: TextAlign.right,
                             style: TextStyle(
                                 color: AppColors.black,
@@ -159,7 +161,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondaryGrey,
-                          fixedSize: Size(270, 20)),
+                          fixedSize: Size(242, 20)),
                       onPressed: () {
                         /*Navigator.push(
                             context,
@@ -171,7 +173,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           Icons.video_call_outlined,
                           size: 28,
                         ),
-                        Text("                 Reuniões",
+                        Text("               Reuniões",
                             //textAlign: TextAlign.right,
                             style: TextStyle(
                                 color: AppColors.black,
@@ -197,7 +199,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
         bottomNavigationBar: BottomAppBarEasyScrum(),
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.fromLTRB(8, 24, 8, 8),
+            padding: EdgeInsets.fromLTRB(24, 24, 8, 8),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
