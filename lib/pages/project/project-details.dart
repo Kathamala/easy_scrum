@@ -2,6 +2,7 @@
 import 'package:easy_scrum/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/pages/project/project-edit.dart';
+import 'package:easy_scrum/pages/project/project-members.dart';
 import 'package:flutter/material.dart';
 
 class ProjectDetailsPage extends StatefulWidget {
@@ -140,10 +141,11 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(242, 20)),
                       onPressed: () {
-                        /*Navigator.push(
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ProjectMembersPage()));*/
+                                builder: (context) =>
+                                    const ProjectMembersPage()));
                       },
                       child: Row(children: [
                         Icon(
