@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
-import 'package:easy_scrum/colors.dart';
+import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/pages/meeting/meeting-list.dart';
 //import 'package:easy_scrum/pages/login/login.dart';
 import 'package:easy_scrum/pages/project/project-details.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +30,18 @@ class _HomePageState extends State<HomePage> {
         MaterialPageRoute(builder: (context) => const ProjectDetailsPage()));
   }
 
+  void openMeetings() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const MeetingListPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     final cardProjetos = Card(
         elevation: 4.0,
         child: SizedBox(
           height: 320,
-          width: 320,
+          width: double.infinity,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -117,7 +123,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 4.0,
         child: SizedBox(
           height: 320,
-          width: 320,
+          width: double.infinity,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -274,7 +280,9 @@ class _HomePageState extends State<HomePage> {
                               color: AppColors.primaryPurple,
                               fontSize: 11,
                               fontWeight: FontWeight.bold)),
-                      onPressed: () {}),
+                      onPressed: () {
+                        openMeetings();
+                      }),
                 ),
               ]),
         ));
