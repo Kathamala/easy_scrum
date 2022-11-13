@@ -38,7 +38,11 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopAppBar(null, widget._meeting.getName(), getActions()),
+      appBar: TopAppBar(
+        Key(DateTime.now().millisecondsSinceEpoch.toString()),
+        widget._meeting.getName(),
+        getActions(),
+      ),
       bottomNavigationBar: const BottomAppBarEasyScrum(),
       body: Container(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
