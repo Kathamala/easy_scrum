@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
-import 'package:easy_scrum/colors.dart';
+import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:flutter/material.dart';
 

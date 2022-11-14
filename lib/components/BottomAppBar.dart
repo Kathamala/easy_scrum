@@ -1,5 +1,5 @@
 // ignore: file_names
-import 'package:easy_scrum/colors.dart';
+import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/pages/home.dart';
 import 'package:easy_scrum/pages/project/project-creation.dart';
 import 'package:flutter/material.dart';
