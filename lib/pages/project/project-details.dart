@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 import 'package:easy_scrum/design/colors.dart';
+import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/pages/project/project-edit.dart';
 import 'package:easy_scrum/pages/project/project-members.dart';
@@ -24,9 +25,61 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
   String duracaoSprint = "7";
   String quantidadeTimes = "6";
 
-  /*void setProjectData(projectData projectId) {
+  // TO-DO: to integrate
+  Future<void> _remove() async {
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
 
-  }*/
+  void _showDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Alerta'),
+          content: Text(
+            'Deseja mesmo excluir o projeto?',
+            style: const TextStyle(fontSize: 14),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Cancelar"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text("Continuar"),
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primaryPurple,
+              ),
+              onPressed: _remove,
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  List<Widget> getActions() {
+    return <Widget>[
+      IconButton(
+        icon: const Icon(Icons.edit),
+        tooltip: 'Editar Projeto',
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProjectEditPage(),
+            ),
+          );
+        },
+      ),
+      IconButton(
+        icon: const Icon(Icons.delete),
+        tooltip: 'Excluir Projeto',
+        onPressed: _showDeleteDialog,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,28 +122,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         textAlign: TextAlign.left,
                         style: TextStyle(fontSize: 16.0)),
                     Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 30, 15, 10),
-                        child: SizedBox(
-                            height: 50.0,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ProjectEditPage()));
-                              },
-                              child: Text(
-                                "Editar projeto",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18.0),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.primaryPurple,
-                                  textStyle: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold)),
-                            ))),
+                      padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+                    )
                   ],
                 ),
               ]),
@@ -189,14 +222,10 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
         ));
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.white,
-          title: const Text("Projeto name",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold)),
-          centerTitle: true,
+        appBar: TopAppBar(
+          Key(DateTime.now().millisecondsSinceEpoch.toString()),
+          "Projeto X",
+          getActions(),
         ),
         bottomNavigationBar: BottomAppBarEasyScrum(),
         body: SingleChildScrollView(
