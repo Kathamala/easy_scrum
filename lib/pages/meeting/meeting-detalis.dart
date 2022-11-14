@@ -146,6 +146,7 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
                         textAlign: TextAlign.left,
                         style: const TextStyle(
                           fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
@@ -153,7 +154,6 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
                         textAlign: TextAlign.left,
                         style: const TextStyle(
                           fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],

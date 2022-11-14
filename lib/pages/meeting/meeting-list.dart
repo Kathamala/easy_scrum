@@ -12,7 +12,9 @@ import 'package:easy_scrum/pages/meeting/meeting.dart';
 import 'package:easy_scrum/pages/meeting/meeting-detalis.dart';
 
 class MeetingListPage extends StatefulWidget {
-  const MeetingListPage({Key? key}) : super(key: key);
+  final Project? _project;
+
+  const MeetingListPage(Key key, this._project) : super(key: key);
 
   @override
   State<MeetingListPage> createState() => _MeetingListPageState();

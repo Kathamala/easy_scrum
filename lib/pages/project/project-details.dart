@@ -2,6 +2,8 @@
 import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/models/project.dart';
+import 'package:easy_scrum/pages/meeting/meeting-list.dart';
 import 'package:easy_scrum/pages/project/project-edit.dart';
 import 'package:easy_scrum/pages/project/project-members.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,18 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
   Future<void> _remove() async {
     Navigator.of(context).pop();
     Navigator.of(context).pop();
+  }
+
+  void _openMeetings(Project project) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MeetingListPage(
+          Key(DateTime.now().millisecondsSinceEpoch.toString()),
+          project,
+        ),
+      ),
+    );
   }
 
   void _showDeleteDialog() {
@@ -198,10 +212,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           backgroundColor: AppColors.secondaryGrey,
                           fixedSize: Size(242, 20)),
                       onPressed: () {
-                        /*Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProjectMeetingsPage()));*/
+                        _openMeetings(Project(1, 'Easy Scrum'));
                       },
                       child: Row(children: [
                         Icon(
