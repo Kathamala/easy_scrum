@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/models/meeting.dart';
+import 'package:easy_scrum/pages/meeting/meeting.dart';
 
 class MeetingDetailsPage extends StatefulWidget {
   final Meeting _meeting;
@@ -26,11 +27,31 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
   List<Widget> getActions() {
     return <Widget>[
       IconButton(
+        icon: const Icon(Icons.link),
+        tooltip: 'Ir para Reunião',
+        onPressed: () {
+          _openLink(widget._meeting.getLink());
+        },
+      ),
+      IconButton(
         icon: const Icon(Icons.edit),
         tooltip: 'Editar Reunião',
         onPressed: () {
-          // handle the press
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MeetingPage(
+                Key(DateTime.now().millisecondsSinceEpoch.toString()),
+                widget._meeting,
+              ),
+            ),
+          );
         },
+      ),
+      IconButton(
+        icon: const Icon(Icons.delete),
+        tooltip: 'Excluir Reunião',
+        onPressed: () {},
       ),
     ];
   }

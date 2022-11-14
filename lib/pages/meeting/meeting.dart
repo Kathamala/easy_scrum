@@ -40,6 +40,36 @@ class _MeetingPageState extends State<MeetingPage> {
     return 'Alterar Reunião';
   }
 
+  String _getButtonName() {
+    if (widget._meeting == null) {
+      return 'Cadastrar';
+    }
+    return 'Alterar';
+  }
+
+  void _setInfo() {
+    setState(() {
+      _nameController.text = widget._meeting!.getName();
+      _linkController.text = widget._meeting!.getLink();
+      _datetimeController.text = widget._meeting!.getDatetime().toString();
+      for (var element in _projects) {
+        if (element.getId() == widget._meeting!.getProject().getId()) {
+          _projectController = element;
+        }
+      }
+      for (var element in _categories) {
+        if (element.getId() == widget._meeting!.getCategory().getId()) {
+          _categoryController = element;
+        }
+      }
+      _chosenPeople = widget._meeting!
+          .getPeople()
+          .map((element) => Item(element.getId(), element.getName()))
+          .toList();
+      _descriptionController.text = widget._meeting!.getDescription();
+    });
+  }
+
   // TO-DO
   void _submit() {
     Navigator.of(context).pop();
@@ -252,10 +282,10 @@ class _MeetingPageState extends State<MeetingPage> {
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(AppColors.primaryPurple),
           ),
-          child: const Text(
-            'Cadastrar',
+          child: Text(
+            _getButtonName(),
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.white,
               fontSize: 20.0,
             ),
           ),
@@ -325,6 +355,10 @@ class _MeetingPageState extends State<MeetingPage> {
     _people.add(Item(1, 'Cicrano de Tal'));
     _projectController = _projects.first;
     _categoryController = _categories.first;
+    if (widget._meeting == null) {
+    } else {
+      _setInfo();
+    }
   }
 
   @override
