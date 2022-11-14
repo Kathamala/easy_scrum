@@ -1,12 +1,10 @@
-class Person {
+class Item {
   late int _id;
   late String _name;
-  late String _imageUrl;
 
-  Person(int id, String name, String imageUrl) {
+  Item(int id, String name) {
     setId(id);
     setName(name);
-    setImageUrl(imageUrl);
   }
 
   int getId() {
@@ -23,13 +21,5 @@ class Person {
 
   void setName(String name) {
     _name = name;
-  }
-
-  String getImageUrl() {
-    return _imageUrl;
-  }
-
-  void setImageUrl(String imageUrl) {
-    _imageUrl = imageUrl;
   }
 }

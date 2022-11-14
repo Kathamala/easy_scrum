@@ -80,7 +80,7 @@ class _MeetingListPageState extends State<MeetingListPage> {
     );
   }
 
-  Widget getFilter() {
+  Widget _getFilter() {
     return Container(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
       child: TextFormField(
@@ -102,7 +102,7 @@ class _MeetingListPageState extends State<MeetingListPage> {
     );
   }
 
-  Widget getItem(context, index) {
+  Widget _getItem(context, index) {
     return Dismissible(
       key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
       background: Container(
@@ -138,29 +138,29 @@ class _MeetingListPageState extends State<MeetingListPage> {
     );
   }
 
-  Widget getList() {
+  Widget _getList() {
     return ListView.builder(
       padding: const EdgeInsets.only(top: 10.0),
       itemCount: _meetings.length,
-      itemBuilder: getItem,
+      itemBuilder: _getItem,
     );
   }
 
-  Widget getColumn() {
+  Widget _getColumn() {
     return Column(
       children: <Widget>[
-        getFilter(),
+        _getFilter(),
         Expanded(
           child: RefreshIndicator(
             onRefresh: _refresh,
-            child: getList(),
+            child: _getList(),
           ),
         ),
       ],
     );
   }
 
-  List<Widget> getActions() {
+  List<Widget> _getActions() {
     return <Widget>[
       IconButton(
         icon: const Icon(Icons.add),
@@ -173,8 +173,8 @@ class _MeetingListPageState extends State<MeetingListPage> {
   @override
   void initState() {
     super.initState();
-    _allMeetings.add(Meeting(0, 'My Daily', 'https://meet.google.com/', '', DateTime.now(), Project(0, 'Scrum'), CategoryMeeting(0, 'DAILY'), [Person(0, 'Fulano')]));
-    _allMeetings.add(Meeting(1, 'My RG', 'https://meet.google.com/', '', DateTime.now(), Project(0, 'Scrum'), CategoryMeeting(1, 'RG'), [Person(0, 'Fulano')]));
+    _allMeetings.add(Meeting(0, 'My Daily', 'https://meet.google.com/', '', DateTime.now(), Project(0, 'Scrum'), CategoryMeeting(0, 'DAILY'), [Person(0, 'Fulano', '')]));
+    _allMeetings.add(Meeting(1, 'My RG', 'https://meet.google.com/', '', DateTime.now(), Project(0, 'Scrum'), CategoryMeeting(1, 'RG'), [Person(0, 'Fulano', '')]));
     _meetings = [..._allMeetings];
   }
 
@@ -184,12 +184,12 @@ class _MeetingListPageState extends State<MeetingListPage> {
       appBar: TopAppBar(
         Key(DateTime.now().millisecondsSinceEpoch.toString()),
         'Lista de Reuniões',
-        getActions(),
+        _getActions(),
       ),
       bottomNavigationBar: const BottomAppBarEasyScrum(),
       body: Container(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: getColumn(),
+        child: _getColumn(),
       ),
     );
   }
