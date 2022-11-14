@@ -28,6 +28,7 @@ class _MeetingListPageState extends State<MeetingListPage> {
 
   final TextEditingController _filterController = TextEditingController();
 
+  // TO-DO: to integrate
   Future<void> _refresh() async {
     setState(() {
       _filterController.text = '';
@@ -36,12 +37,14 @@ class _MeetingListPageState extends State<MeetingListPage> {
     await Future.delayed(const Duration(seconds: 1));
   }
 
+  // TO-DO: to integrate
   Future<void> _filter(String value) async {
     setState(() {
       _meetings = _allMeetings.where((item) => item.getTitle().contains(value)).toList();
     });
   }
 
+  // TO-DO: to integrate
   Future<void> _remove(int index) async {
     setState(() {
       _lastRemoved = _meetings[index];
@@ -50,6 +53,7 @@ class _MeetingListPageState extends State<MeetingListPage> {
     });
   }
 
+  // TO-DO: to integrate
   Future<void> _cancelRemove() async {
     setState(() {
       _meetings.insert(_lastRemovedPos, _lastRemoved);

@@ -1,7 +1,7 @@
 import 'package:easy_scrum/models/category_meeting.dart';
 import 'package:easy_scrum/models/person.dart';
 import 'package:easy_scrum/models/project.dart';
-import 'package:easy_scrum/utils/number.dart';
+import 'package:easy_scrum/utils/date.dart';
 
 class Meeting {
   late int _id;
@@ -89,7 +89,6 @@ class Meeting {
 	}
 
   String getTitle() {
-    String datetime = '${Number.format(getDatetime().day)}/${Number.format(getDatetime().month)}/${Number.format(getDatetime().year)} ${Number.format(getDatetime().hour)}:${Number.format(getDatetime().minute)}:${Number.format(getDatetime().second)}';
-    return '$datetime [${getCategory().getName()}]';
+    return '${Datetime.formatDatetime(getDatetime())} [${getCategory().getName()}]';
   }
 }

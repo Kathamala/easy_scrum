@@ -70,7 +70,7 @@ class _MeetingPageState extends State<MeetingPage> {
     });
   }
 
-  // TO-DO
+  // TO-DO: to integrate 
   void _submit() {
     Navigator.of(context).pop();
   }
@@ -222,33 +222,6 @@ class _MeetingPageState extends State<MeetingPage> {
     );
   }
 
-  void _showReportDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Participantes"),
-          content: MultiSelectChip(
-            _people,
-            _chosenPeople,
-            maxSelection: _people.length,
-            onSelectionChanged: (list) {
-              setState(() {
-                _chosenPeople = list;
-              });
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("Fechar"),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          ],
-        );
-      },
-    );
-  }
-
   Widget _getDescriptionField() {
     return TextFormField(
       decoration: InputDecoration(
@@ -317,13 +290,40 @@ class _MeetingPageState extends State<MeetingPage> {
     );
   }
 
+  void _showPeopleDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Convidados'),
+          content: MultiSelectChip(
+            _people,
+            _chosenPeople,
+            maxSelection: _people.length,
+            onSelectionChanged: (list) {
+              setState(() {
+                _chosenPeople = list;
+              });
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Fechar'),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   // 1º Modo de selecionar participantes
   List<Widget> _getActions() {
     return <Widget>[
       IconButton(
         icon: const Icon(Icons.people),
-        tooltip: 'Gerir Participantes',
-        onPressed: () => _showReportDialog(),
+        tooltip: 'Gerir Convidados',
+        onPressed: () => _showPeopleDialog(),
       ),
     ];
   }
@@ -337,8 +337,8 @@ class _MeetingPageState extends State<MeetingPage> {
   //       style: TextButton.styleFrom(
   //         foregroundColor: AppColors.primaryPurple,
   //       ),
-  //       child: const Text("Selecionar participantes"),
-  //       onPressed: () => _showReportDialog(),
+  //       child: const Text('Selecionar participantes'),
+  //       onPressed: () => _showPeopleDialog(),
   //     ),
   //   );
   // }
