@@ -99,14 +99,15 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
   Widget build(BuildContext context) {
     final cardDadosProjeto = Card(
         elevation: 4.0,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(30, 5, 30, 20),
+        child: SizedBox(
+          width: double.infinity,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
                   child: Text("Dados do projeto",
+                      textAlign: TextAlign.left,
                       style: TextStyle(
                           color: AppColors.primaryPurple,
                           fontSize: 14,
@@ -146,91 +147,93 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
     final cardConsultar = Card(
         elevation: 4.0,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(30, 5, 30, 20),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
-                  child: Text("Consultar",
-                      style: TextStyle(
-                          color: AppColors.primaryPurple,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold)),
-                ),
-                Column(
+            padding: const EdgeInsets.fromLTRB(30, 5, 30, 20),
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.secondaryGrey,
-                          fixedSize: Size(242, 20)),
-                      onPressed: () {
-                        /*Navigator.push(
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
+                      child: Text("Consultar",
+                          style: TextStyle(
+                              color: AppColors.primaryPurple,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    Column(
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.secondaryGrey,
+                              fixedSize: Size(242, 20)),
+                          onPressed: () {
+                            /*Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const ProjectActivitiesPage()));*/
-                      },
-                      child: Row(children: [
-                        Icon(
-                          Icons.list,
-                          size: 28,
+                          },
+                          child: Row(children: [
+                            Icon(
+                              Icons.list,
+                              size: 28,
+                            ),
+                            Text("            Atividades",
+                                //textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold))
+                          ]),
                         ),
-                        Text("              Atividades",
-                            //textAlign: TextAlign.right,
-                            style: TextStyle(
-                                color: AppColors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold))
-                      ]),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.secondaryGrey,
-                          fixedSize: Size(242, 20)),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ProjectMembersPage()));
-                      },
-                      child: Row(children: [
-                        Icon(
-                          Icons.people,
-                          size: 28,
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.secondaryGrey,
+                              fixedSize: Size(242, 20)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ProjectMembersPage()));
+                          },
+                          child: Row(children: [
+                            Icon(
+                              Icons.people,
+                              size: 28,
+                            ),
+                            Text("           Integrantes",
+                                //textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold))
+                          ]),
                         ),
-                        Text("             Integrantes",
-                            //textAlign: TextAlign.right,
-                            style: TextStyle(
-                                color: AppColors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold))
-                      ]),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.secondaryGrey,
-                          fixedSize: Size(242, 20)),
-                      onPressed: () {
-                        _openMeetings(Project(1, 'Easy Scrum'));
-                      },
-                      child: Row(children: [
-                        Icon(
-                          Icons.video_call_outlined,
-                          size: 28,
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.secondaryGrey,
+                              fixedSize: Size(242, 20)),
+                          onPressed: () {
+                            _openMeetings(Project(1, 'Easy Scrum'));
+                          },
+                          child: Row(children: [
+                            Icon(
+                              Icons.video_call_outlined,
+                              size: 28,
+                            ),
+                            Text("             Reuniões",
+                                //textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold))
+                          ]),
                         ),
-                        Text("               Reuniões",
-                            //textAlign: TextAlign.right,
-                            style: TextStyle(
-                                color: AppColors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold))
-                      ]),
+                      ],
                     ),
-                  ],
-                ),
-              ]),
-        ));
+                  ]),
+            )));
 
     return Scaffold(
         appBar: TopAppBar(
