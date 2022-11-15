@@ -57,7 +57,9 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                   fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
-        bottomNavigationBar: BottomAppBarEasyScrum(),
+        bottomNavigationBar: BottomAppBarEasyScrum(
+          currentScreen: "project-creation",
+        ),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 5),
