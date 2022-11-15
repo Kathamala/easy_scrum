@@ -2,6 +2,7 @@ import 'package:easy_scrum/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/BottomAppBar.dart';
+import '../../components/TopAppBar.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -97,12 +98,18 @@ class _ProfilePage extends State<ProfilePage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                   child: TextButton(
-                      child: Text("mudar senha...",
-                          style: TextStyle(
-                              color: AppColors.primaryPurple,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold)),
-                      onPressed: () {}),
+                    child: Text("mudar senha...",
+                        style: TextStyle(
+                            color: AppColors.primaryPurple,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold)),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfilePage()));
+                    },
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 15, 8, 25),
@@ -119,6 +126,7 @@ class _ProfilePage extends State<ProfilePage> {
                 )
               ]),
         ));
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.white,
@@ -128,6 +136,17 @@ class _ProfilePage extends State<ProfilePage> {
                   fontSize: 18,
                   fontWeight: FontWeight.bold)),
           centerTitle: true,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {},
+              child: IconButton(
+                icon: const Icon(Icons.edit),
+                color: Colors.black,
+                tooltip: 'Editar perfil',
+                onPressed: () {},
+              ),
+            ),
+          ],
         ),
         bottomNavigationBar: const BottomAppBarEasyScrum(),
         body: SingleChildScrollView(

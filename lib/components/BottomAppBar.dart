@@ -4,6 +4,8 @@ import 'package:easy_scrum/pages/home.dart';
 import 'package:easy_scrum/pages/project/project-creation.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/profile/profile.dart';
+
 class BottomAppBarEasyScrum extends StatelessWidget {
   const BottomAppBarEasyScrum({Key? key}) : super(key: key);
 
@@ -72,7 +74,12 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                   Icons.person,
                   color: AppColors.primaryPurple,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfilePage()));
+                },
               ),
             ],
           ),
