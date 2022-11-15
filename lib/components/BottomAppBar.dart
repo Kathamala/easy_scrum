@@ -5,7 +5,8 @@ import 'package:easy_scrum/pages/project/project-creation.dart';
 import 'package:flutter/material.dart';
 
 class BottomAppBarEasyScrum extends StatelessWidget {
-  const BottomAppBarEasyScrum({Key? key}) : super(key: key);
+  final String? currentScreen;
+  const BottomAppBarEasyScrum({Key? key, this.currentScreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class BottomAppBarEasyScrum extends StatelessWidget {
           padding:
               const EdgeInsets.only(left: 8.0, right: 8.0, top: 10, bottom: 10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               IconButton(
                 tooltip: 'Home',
@@ -28,27 +29,23 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                   color: AppColors.primaryPurple,
                 ),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                  if (currentScreen != "home") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+                  }
                 },
               ),
               //if (centerLocations.contains(fabLocation)) const Spacer(),
-              IconButton(
-                tooltip: 'Search',
-                icon: Icon(
-                  Icons.search,
-                  color: AppColors.primaryPurple,
-                ),
-                onPressed: () {},
-              ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProjectCreationPage()));
+                  if (currentScreen != "project-creation") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProjectCreationPage()));
+                  }
                 },
                 child: Icon(
                   Icons.add,
@@ -59,21 +56,16 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                     shape: const StadiumBorder()),
               ),
               IconButton(
-                tooltip: 'Messages',
-                icon: Icon(
-                  Icons.chat_bubble_outline,
-                  color: AppColors.primaryPurple,
-                ),
-                onPressed: () {},
-              ),
-              IconButton(
-                tooltip: 'Profile',
-                icon: Icon(
-                  Icons.person,
-                  color: AppColors.primaryPurple,
-                ),
-                onPressed: () {},
-              ),
+                  tooltip: 'Profile',
+                  icon: Icon(
+                    Icons.person,
+                    color: AppColors.primaryPurple,
+                  ),
+                  onPressed: () {
+                    if (currentScreen != "profile") {
+                      print("Go to profile screen");
+                    }
+                  })
             ],
           ),
         ),

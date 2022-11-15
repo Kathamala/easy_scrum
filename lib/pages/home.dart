@@ -258,7 +258,9 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         actions: _getActions(),
       ),
-      bottomNavigationBar: const BottomAppBarEasyScrum(),
+      bottomNavigationBar: const BottomAppBarEasyScrum(
+        currentScreen: "home",
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
