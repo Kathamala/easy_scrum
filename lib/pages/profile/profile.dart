@@ -95,7 +95,7 @@ class _ProfilePage extends State<ProfilePage> {
                   ]),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 15, 8, 100),
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                   child: TextButton(
                       child: Text("mudar senha...",
                           style: TextStyle(
@@ -104,6 +104,19 @@ class _ProfilePage extends State<ProfilePage> {
                               fontWeight: FontWeight.bold)),
                       onPressed: () {}),
                 ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 15, 8, 25),
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryPurple,
+                          fixedSize: const Size(150, 50),
+                          shape: StadiumBorder()),
+                      child: const Text(
+                        "Salvar alterações",
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      )),
+                )
               ]),
         ));
     return Scaffold(
@@ -116,17 +129,17 @@ class _ProfilePage extends State<ProfilePage> {
                   fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
-        bottomNavigationBar: BottomAppBarEasyScrum(),
+        bottomNavigationBar: const BottomAppBarEasyScrum(),
         body: SingleChildScrollView(
             child: Container(
-          padding: EdgeInsets.only(left: 40, top: 40),
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             // Image.asset("assets/images/gabi.png"),
             Container(
                 height: 150,
                 width: 150,
-                child: CircleAvatar(
+                child: const CircleAvatar(
                   backgroundImage: AssetImage("assets/images/gabi.png"),
                 )),
             cardProfile,
