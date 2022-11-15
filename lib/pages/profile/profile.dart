@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
-
 import 'package:easy_scrum/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -13,10 +11,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePage extends State<ProfilePage> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   void profile() {
     print("Profile!");
@@ -64,14 +60,6 @@ class _ProfilePage extends State<ProfilePage> {
                             color: Colors.black,
                           )),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.black,
-                        size: 20.0,
-                      ),
-                    ),
                   ]),
                 ),
                 Padding(
@@ -96,14 +84,14 @@ class _ProfilePage extends State<ProfilePage> {
                             color: Colors.black,
                           )),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.black,
-                        size: 20.0,
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                    //   child: Icon(
+                    //     Icons.edit,
+                    //     color: Colors.black,
+                    //     size: 20.0,
+                    //   ),
+                    // ),
                   ]),
                 ),
                 Padding(
