@@ -5,6 +5,7 @@ import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/models/info.dart';
 import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/pages/meeting/meeting-list.dart';
+import 'package:easy_scrum/pages/project/project-activity.dart';
 import 'package:easy_scrum/pages/project/project-edit.dart';
 import 'package:easy_scrum/pages/project/project-members.dart';
 import 'package:flutter/material.dart';
@@ -182,10 +183,10 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       fixedSize: Size(242, 20),
                     ),
                     onPressed: () {
-                      /*Navigator.push(
+                      Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ProjectActivitiesPage()));*/
+                                builder: (context) => const ProjectActivitiesPage()));
                     },
                     child: Row(children: [
                       Icon(
