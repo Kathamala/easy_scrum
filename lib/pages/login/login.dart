@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
-import 'package:easy_scrum/colors.dart';
+import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/pages/home.dart';
 import 'package:easy_scrum/pages/login/recoveryPassword.dart';
 import 'package:easy_scrum/pages/login/register.dart';
@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary: AppColors.primaryPurple,
+                            backgroundColor: AppColors.primaryPurple,
                             fixedSize: Size(250, 60),
                             shape: StadiumBorder()),
                         child: const Text(
@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                                           const RegisterPage()));
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: AppColors.primaryPurple,
+                              backgroundColor: AppColors.primaryPurple,
                             ),
                             child: const Text(
                               "Cadastre-se",

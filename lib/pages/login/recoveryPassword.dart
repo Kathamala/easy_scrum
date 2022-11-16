@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
-import 'package:easy_scrum/colors.dart';
-import 'package:easy_scrum/pages/home.dart';
-import 'package:easy_scrum/pages/login/login.dart';
+import 'package:easy_scrum/design/colors.dart';
+//import 'package:easy_scrum/pages/home.dart';
+//import 'package:easy_scrum/pages/login/login.dart';
 import 'package:flutter/material.dart';
 
 class RecoveryPasswordPage extends StatefulWidget {
@@ -263,14 +263,14 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 20)),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary: AppColors
+                                                      style: ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              AppColors
                                                                   .primaryPurple,
-                                                              fixedSize:
-                                                                  Size(250, 60),
-                                                              shape:
-                                                                  StadiumBorder()),
+                                                          fixedSize:
+                                                              Size(250, 60),
+                                                          shape:
+                                                              StadiumBorder()),
                                                       onPressed: () {
                                                         Navigator.pop(context);
                                                         Navigator.pop(context);
@@ -290,7 +290,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: AppColors.primaryPurple,
+                              backgroundColor: AppColors.primaryPurple,
                               fixedSize: Size(250, 60),
                               shape: StadiumBorder()),
                           child: Text(

@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
-import 'package:easy_scrum/colors.dart';
-import 'package:easy_scrum/pages/home.dart';
-import 'package:easy_scrum/pages/login/login.dart';
+import 'package:easy_scrum/design/colors.dart';
+//import 'package:easy_scrum/pages/home.dart';
+//import 'package:easy_scrum/pages/login/login.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -210,7 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                         color: Colors.white,
                                                         fontSize: 20)),
                                                 style: ElevatedButton.styleFrom(
-                                                    primary:
+                                                    backgroundColor:
                                                         AppColors.primaryPurple,
                                                     fixedSize: Size(250, 60),
                                                     shape: StadiumBorder()),
@@ -227,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary: AppColors.primaryPurple,
+                            backgroundColor: AppColors.primaryPurple,
                             fixedSize: Size(250, 60),
                             shape: StadiumBorder()),
                         child: const Text(

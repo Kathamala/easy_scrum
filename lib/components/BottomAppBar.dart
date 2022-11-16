@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import '../pages/profile/profile.dart';
 
 class BottomAppBarEasyScrum extends StatelessWidget {
-  const BottomAppBarEasyScrum({Key? key}) : super(key: key);
+  final String? currentScreen;
+  const BottomAppBarEasyScrum({Key? key, this.currentScreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class BottomAppBarEasyScrum extends StatelessWidget {
           padding:
               const EdgeInsets.only(left: 8.0, right: 8.0, top: 10, bottom: 10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               IconButton(
                 tooltip: 'Home',
@@ -30,27 +31,23 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                   color: AppColors.primaryPurple,
                 ),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                  if (currentScreen != "home") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+                  }
                 },
               ),
               //if (centerLocations.contains(fabLocation)) const Spacer(),
-              IconButton(
-                tooltip: 'Search',
-                icon: Icon(
-                  Icons.search,
-                  color: AppColors.primaryPurple,
-                ),
-                onPressed: () {},
-              ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProjectCreationPage()));
+                  if (currentScreen != "project-creation") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProjectCreationPage()));
+                  }
                 },
                 child: Icon(
                   Icons.add,
