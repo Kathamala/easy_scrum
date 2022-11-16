@@ -1,13 +1,14 @@
-// ignore: file_names
-import 'dart:io';
+// ignore_for_file: file_names
 
-import 'package:easy_scrum/colors.dart';
-import 'package:easy_scrum/pages/profile/profile.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../components/BottomAppBar.dart';
-import '../../components/TopAppBar.dart';
+import 'package:easy_scrum/design/colors.dart';
+import 'package:easy_scrum/pages/profile/profile.dart';
+
+import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/components/TopAppBar.dart';
 
 class ProfileEditPage extends StatefulWidget {
   const ProfileEditPage({Key? key}) : super(key: key);
@@ -38,7 +39,6 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   String email = 'davicesar@gmail.com';
 
   void profile() {
-    print("Profile!");
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const ProfileEditPage()));
   }

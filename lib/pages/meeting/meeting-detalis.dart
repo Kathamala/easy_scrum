@@ -125,11 +125,9 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
         child: SizedBox(
           width: double.infinity,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Informações Gerais",
-                textAlign: TextAlign.left,
                 style: TextStyle(
                   color: AppColors.primaryPurple,
                   fontSize: 16,
@@ -174,11 +172,9 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
         child: SizedBox(
           width: double.infinity,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Convidados',
-                textAlign: TextAlign.left,
                 style: TextStyle(
                   color: AppColors.primaryPurple,
                   fontSize: 16,
