@@ -198,8 +198,10 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                             },
                           ),
                           Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 30, 15, 10),
+                              padding: const EdgeInsets.only(
+                                top: 20.0,
+                                bottom: 20.0,
+                              ),
                               child: SizedBox(
                                   height: 50.0,
                                   child: ElevatedButton(
