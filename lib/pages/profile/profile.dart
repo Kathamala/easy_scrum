@@ -1,4 +1,5 @@
 import 'package:easy_scrum/colors.dart';
+import 'package:easy_scrum/pages/profile/profile-edit.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/BottomAppBar.dart';
@@ -111,19 +112,6 @@ class _ProfilePage extends State<ProfilePage> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 15, 8, 25),
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryPurple,
-                          fixedSize: const Size(150, 50),
-                          shape: StadiumBorder()),
-                      child: const Text(
-                        "Salvar alterações",
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      )),
-                )
               ]),
         ));
 
@@ -137,14 +125,16 @@ class _ProfilePage extends State<ProfilePage> {
                   fontWeight: FontWeight.bold)),
           centerTitle: true,
           actions: <Widget>[
-            TextButton(
-              onPressed: () {},
-              child: IconButton(
-                icon: const Icon(Icons.edit),
-                color: Colors.black,
-                tooltip: 'Editar perfil',
-                onPressed: () {},
-              ),
+            IconButton(
+              icon: const Icon(Icons.edit),
+              color: Colors.black,
+              tooltip: 'Editar perfil',
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProfileEditPage()));
+              },
             ),
           ],
         ),
