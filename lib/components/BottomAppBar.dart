@@ -4,6 +4,8 @@ import 'package:easy_scrum/pages/home.dart';
 import 'package:easy_scrum/pages/project/project-creation.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/profile/profile.dart';
+
 class BottomAppBarEasyScrum extends StatelessWidget {
   final String? currentScreen;
   const BottomAppBarEasyScrum({Key? key, this.currentScreen}) : super(key: key);
@@ -56,16 +58,26 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                     shape: const StadiumBorder()),
               ),
               IconButton(
-                  tooltip: 'Profile',
-                  icon: Icon(
-                    Icons.person,
-                    color: AppColors.primaryPurple,
-                  ),
-                  onPressed: () {
-                    if (currentScreen != "profile") {
-                      print("Go to profile screen");
-                    }
-                  })
+                tooltip: 'Messages',
+                icon: Icon(
+                  Icons.chat_bubble_outline,
+                  color: AppColors.primaryPurple,
+                ),
+                onPressed: () {},
+              ),
+              IconButton(
+                tooltip: 'Profile',
+                icon: Icon(
+                  Icons.person,
+                  color: AppColors.primaryPurple,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfilePage()));
+                },
+              ),
             ],
           ),
         ),
