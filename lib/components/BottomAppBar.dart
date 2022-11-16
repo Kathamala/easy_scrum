@@ -39,7 +39,6 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                   }
                 },
               ),
-              //if (centerLocations.contains(fabLocation)) const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   if (currentScreen != "project-creation") {
@@ -56,14 +55,6 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryPurple,
                     shape: const StadiumBorder()),
-              ),
-              IconButton(
-                tooltip: 'Messages',
-                icon: Icon(
-                  Icons.chat_bubble_outline,
-                  color: AppColors.primaryPurple,
-                ),
-                onPressed: () {},
               ),
               IconButton(
                 tooltip: 'Profile',

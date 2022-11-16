@@ -1,4 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
+// ignore_for_file: file_names
+
 import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:flutter/material.dart';
@@ -28,21 +29,21 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
   }
 
   void _setCampos() {
-    nomeController.text = "Projeto X";
-    clienteController.text = "McLovin";
+    nomeController.text = 'Projeto X';
+    clienteController.text = 'McLovin';
     date = DateTime.now();
-    prazoController.text = "10";
-    duracaoSprintController.text = "7";
-    quantidadeTimesController.text = "4";
+    prazoController.text = '10';
+    duracaoSprintController.text = '7';
+    quantidadeTimesController.text = '4';
   }
 
   void _saveChanges() {
-    print("Nome: " + nomeController.text + "\n");
-    print("Cliente: " + clienteController.text + "\n");
-    print("Data de início: " + date.toString() + "\n");
-    print("Prazo: " + prazoController.text + "\n");
-    print("Duração do sprint: " + duracaoSprintController.text + "\n");
-    print("Quantidade de times: " + quantidadeTimesController.text + "\n");
+    print('Nome: ' + nomeController.text + '\n');
+    print('Cliente: ' + clienteController.text + '\n');
+    print('Data de início: ' + date.toString() + '\n');
+    print('Prazo: ' + prazoController.text + '\n');
+    print('Duração do sprint: ' + duracaoSprintController.text + '\n');
+    print('Quantidade de times: ' + quantidadeTimesController.text + '\n');
     //Navigator.pop(context);
   }
 
@@ -51,7 +52,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.white,
-          title: const Text("Editar projeto",
+          title: const Text('Alterar Projeto',
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
@@ -75,7 +76,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                           TextFormField(
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                                labelText: "Nome",
+                                labelText: 'Nome',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
                             style:
@@ -83,7 +84,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                             controller: nomeController,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "Insira o nome do projeto";
+                                return 'Insira o nome do projeto';
                               } else {
                                 return null;
                               }
@@ -93,7 +94,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                           TextFormField(
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                                labelText: "Cliente",
+                                labelText: 'Cliente',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
                             style:
@@ -101,7 +102,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                             controller: clienteController,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "Insira o cliente do projeto";
+                                return 'Insira o cliente do projeto';
                               } else {
                                 return null;
                               }
@@ -111,13 +112,13 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                           Row(
                             children: <Widget>[
                               Expanded(
-                                child: Text("Data de início:",
+                                child: Text('Data de início:',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(fontSize: 16.0)),
                               ),
                               Expanded(
                                 child: Text(
-                                    "${date.day}/${date.month}/${date.year}",
+                                    '${date.day}/${date.month}/${date.year}',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(fontSize: 18.0)),
                               ),
@@ -146,7 +147,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                           TextFormField(
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                labelText: "Prazo (em semanas)",
+                                labelText: 'Prazo (em semanas)',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
                             style:
@@ -154,7 +155,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                             controller: prazoController,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "Insira o prazo do projeto";
+                                return 'Insira o prazo do projeto';
                               } else {
                                 return null;
                               }
@@ -164,7 +165,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                           TextFormField(
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                labelText: "Duração do sprint (em dias)",
+                                labelText: 'Duração do sprint (em dias)',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
                             style:
@@ -172,7 +173,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                             controller: duracaoSprintController,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "Insira a duração do sprint do projeto";
+                                return 'Insira a duração do sprint do projeto';
                               } else {
                                 return null;
                               }
@@ -182,7 +183,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                           TextFormField(
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                labelText: "Quantidade de times",
+                                labelText: 'Quantidade de times',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
                             style:
@@ -190,7 +191,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                             controller: quantidadeTimesController,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "Insira a quantidade de times do projeto";
+                                return 'Insira a quantidade de times do projeto';
                               } else {
                                 return null;
                               }
@@ -208,7 +209,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                                       }
                                     },
                                     child: Text(
-                                      "Salvar alterações",
+                                      'Alterar',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 20.0),
                                     ),

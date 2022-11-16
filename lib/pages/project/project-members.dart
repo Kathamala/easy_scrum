@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
+// ignore_for_file: file_names
+
+import 'package:flutter/material.dart';
 import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/models/project_member.dart';
-import 'package:flutter/material.dart';
 
 class Integrante {
   String nome;
@@ -14,11 +15,11 @@ class Integrante {
 
 List<Integrante> getMembersFromId(int id) {
   List<Integrante> novaLista = [];
-  novaLista.add(Integrante("Alex", "Scrum Master"));
-  novaLista.add(Integrante("Antonio", "Colaborador"));
-  novaLista.add(Integrante("Daniel", "Product Owner"));
-  novaLista.add(Integrante("Davi", "Colaborador"));
-  novaLista.add(Integrante("Tiago", "Colaborador"));
+  novaLista.add(Integrante('Alex', 'Scrum Master'));
+  novaLista.add(Integrante('Antonio', 'Colaborador'));
+  novaLista.add(Integrante('Daniel', 'Product Owner'));
+  novaLista.add(Integrante('Davi', 'Colaborador'));
+  novaLista.add(Integrante('Tiago', 'Colaborador'));
 
   return novaLista;
 }
@@ -128,14 +129,14 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
         Padding(
           padding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text("Toque no ícone",
+            Text('Toque no ícone',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: AppColors.primaryPurple,
                     fontSize: 14,
                     fontWeight: FontWeight.bold)),
             Icon(Icons.more_vert),
-            Text("para opções",
+            Text('para opções',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: AppColors.primaryPurple,
@@ -179,11 +180,11 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text("Cancelar"),
+              child: const Text('Cancelar'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: const Text("Continuar"),
+              child: const Text('Continuar'),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.primaryPurple,
               ),
@@ -220,7 +221,7 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
     return Scaffold(
       appBar: TopAppBar(
         Key(DateTime.now().millisecondsSinceEpoch.toString()),
-        "Integrantes do projeto",
+        'Integrantes do projeto',
         getActions(),
       ),
       bottomNavigationBar: BottomAppBarEasyScrum(),

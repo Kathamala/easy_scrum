@@ -1,9 +1,8 @@
-import 'package:easy_scrum/colors.dart';
-import 'package:easy_scrum/pages/profile/profile-edit.dart';
 import 'package:flutter/material.dart';
-
-import '../../components/BottomAppBar.dart';
-import '../../components/TopAppBar.dart';
+import 'package:easy_scrum/design/colors.dart';
+import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/components/TopAppBar.dart';
+import 'package:easy_scrum/pages/profile/profile-edit.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -17,7 +16,6 @@ class _ProfilePage extends State<ProfilePage> {
   TextEditingController emailController = TextEditingController();
 
   void profile() {
-    print("Profile!");
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const ProfilePage()));
   }
@@ -26,7 +24,7 @@ class _ProfilePage extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final cardProfile = Card(
         elevation: 4.0,
-        child: Container(
+        child: SizedBox(
           height: 320,
           width: 320,
           child: Column(
@@ -145,10 +143,10 @@ class _ProfilePage extends State<ProfilePage> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             // Image.asset("assets/images/gabi.png"),
-            Container(
+            const SizedBox(
                 height: 150,
                 width: 150,
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   backgroundImage: AssetImage("assets/images/gabi.png"),
                 )),
             cardProfile,
