@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'dart:math';
+
 import 'package:easy_scrum/design/colors.dart';
-//import 'package:easy_scrum/pages/home.dart';
-//import 'package:easy_scrum/pages/login/login.dart';
 import 'package:flutter/material.dart';
 
 class RecoveryPasswordPage extends StatefulWidget {
@@ -17,12 +17,25 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
   TextEditingController codeController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   int recoveryState = 0;
+  int code = 0;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool codePrompt = false;
 
-  void sendCode() {
+  void sendCode() async {
+    Random random = Random();
+    int _randomNumber1 = random.nextInt(9);
+    int _randomNumber2 = random.nextInt(9);
+    int _randomNumber3 = random.nextInt(9);
+    int _randomNumber4 = random.nextInt(9);
+
+    code = (_randomNumber1 * 1000) +
+        (_randomNumber2 * 100) +
+        (_randomNumber3 * 10) +
+        _randomNumber4;
+
+    //send to email
     print("Code sent!");
   }
 
@@ -141,6 +154,9 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                       validator: (value) {
                                         if (value!.isEmpty) {
                                           return "Insira o código.";
+                                        }
+                                        if (value != code.toString()) {
+                                          return "Código inválido.";
                                         } else {
                                           return null;
                                         }
