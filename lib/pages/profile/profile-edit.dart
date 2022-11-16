@@ -35,8 +35,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
     });
   }
 
-  String username = 'Davi';
-  String email = 'davicesar@gmail.com';
+  String username = 'Gabi';
+  String email = 'gabi@gmail.com';
 
   void profile() {
     Navigator.push(context,
@@ -45,62 +45,106 @@ class _ProfileEditPage extends State<ProfileEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final editPhoto = Padding(
-      padding: const EdgeInsets.fromLTRB(8, 15, 8, 25),
-      child: TextButton(
-          onPressed: _onButtonPressed,
-          style: ElevatedButton.styleFrom(
-              fixedSize: const Size(150, 50), shape: const StadiumBorder()),
-          child: const Text(
-            "Editar foto",
-            style: TextStyle(
-                color: Colors.purple,
-                fontSize: 14,
-                fontWeight: FontWeight.bold),
-          )),
-    );
+    Widget _editPhoto() {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+        child: TextButton(
+            onPressed: _onButtonPressed,
+            style: ElevatedButton.styleFrom(
+                fixedSize: const Size(150, 50), shape: const StadiumBorder()),
+            child: const Text(
+              "Editar foto",
+              style: TextStyle(
+                  color: Colors.purple,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w900),
+            )),
+      );
+    }
 
-    final buildUsername = TextFormField(
-      initialValue: username,
-      decoration: const InputDecoration(
-        labelText: 'Username',
-        labelStyle: TextStyle(
-          color: Colors.black,
+    Widget _getForm() {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+        child: Column(children: [
+          TextFormField(
+            initialValue: username,
+            decoration: const InputDecoration(
+              labelText: 'Username',
+              labelStyle: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
+            initialValue: email,
+            decoration: const InputDecoration(
+              labelText: 'Email',
+            ),
+          ),
+        ]),
+      );
+    }
+
+    Widget _getImage() {
+      return _image != null
+          ? Container(
+              height: 150,
+              width: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    fit: BoxFit.contain, image: FileImage(_image!)),
+              ))
+          : Container(
+              height: 150,
+              width: 150,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: AssetImage("assets/images/gabi.png")),
+              ));
+    }
+
+    Widget _getButton() {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+        child: SizedBox(
+          height: 50.0,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ProfilePage()));
+            },
+            child: const Text(
+              'Salvar Alterações',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.0,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryPurple,
+              textStyle: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
-        border: OutlineInputBorder(),
-      ),
-      maxLength: 30,
-    );
-
-    final buildEmail = TextFormField(
-      initialValue: email,
-      decoration: const InputDecoration(
-        labelText: 'Email',
-        border: OutlineInputBorder(),
-      ),
-      maxLength: 30,
-    );
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.white,
-        title: const Text("Edit profile",
+        title: const Text("Editar perfil",
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
                 fontWeight: FontWeight.bold)),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.check),
-            color: AppColors.primaryPurple,
-            tooltip: 'Editar perfil',
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()));
-            },
-          ),
-        ],
       ),
       bottomNavigationBar: const BottomAppBarEasyScrum(),
       body: Form(
@@ -109,38 +153,13 @@ class _ProfileEditPage extends State<ProfileEditPage> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            _image != null
-                ? Container(
-                    height: 150,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          fit: BoxFit.cover, image: FileImage(_image!)),
-                      // child:Image.file(_image!,
-                      //   width: 150,
-                      //   height: 150,
-                      //   fit: BoxFit.cover,
-                    ))
-                : Container(
-                    height: 150,
-                    width: 150,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/images/gabi.png")),
-                      // child:Image.file(_image!,
-                      //   width: 150,
-                      //   height: 150,
-                      //   fit: BoxFit.cover,
-                    )),
+            _getImage(),
             const SizedBox(height: 16),
-            editPhoto,
+            _editPhoto(),
             const SizedBox(height: 16),
-            buildUsername,
-            const SizedBox(height: 16),
-            buildEmail,
+            _getForm(),
+            const SizedBox(height: 32),
+            _getButton(),
           ],
         ),
       ),

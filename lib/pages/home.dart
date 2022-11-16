@@ -248,7 +248,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: AppColors.white,
         automaticallyImplyLeading: false,
         title: Text(
-          'Bem vindx!',
+          'Bem vindo!',
           style: TextStyle(
             color: AppColors.black,
             fontSize: 18,
