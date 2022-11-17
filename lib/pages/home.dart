@@ -224,7 +224,7 @@ class _HomePageState extends State<HomePage> {
         DateTime.now(),
         Project(1, 'Easy Scrum'),
         CategoryMeeting(1, 'Daily'),
-        [Person(0, 'Fulano de Tal', '')],
+        [Person(0, 'Fulano de Tal', '', '', '')],
       ),
     );
     _meetings.add(
@@ -236,7 +236,7 @@ class _HomePageState extends State<HomePage> {
         DateTime.now(),
         Project(1, 'Easy Scrum'),
         CategoryMeeting(2, 'Stand-up'),
-        [Person(0, 'Fulano de Tal', '')],
+        [Person(0, 'Fulano de Tal', '', '', '')],
       ),
     );
   }
