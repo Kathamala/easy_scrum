@@ -179,8 +179,8 @@ class _MeetingListPageState extends State<MeetingListPage> {
   @override
   void initState() {
     super.initState();
-    _allMeetings.add(Meeting(0, 'My Daily', 'https://meet.google.com/', 'Alguma descrição feita', DateTime.now(), Project(1, 'Easy Scrum'), CategoryMeeting(1, 'Daily'), [Person(0, 'Fulano de Tal', '')]));
-    _allMeetings.add(Meeting(1, 'My Stand-up', 'https://meet.google.com/', 'Alguma descrição feita', DateTime.now(), Project(1, 'Easy Scrum'), CategoryMeeting(2, 'Stand-up'), [Person(0, 'Fulano de Tal', '')]));
+    _allMeetings.add(Meeting(0, 'My Daily', 'https://meet.google.com/', 'Alguma descrição feita', DateTime.now(), Project(1, 'Easy Scrum'), CategoryMeeting(1, 'Daily'), [Person(0, 'Fulano de Tal', '', '', '')]));
+    _allMeetings.add(Meeting(1, 'My Stand-up', 'https://meet.google.com/', 'Alguma descrição feita', DateTime.now(), Project(1, 'Easy Scrum'), CategoryMeeting(2, 'Stand-up'), [Person(0, 'Fulano de Tal', '', '', '')]));
     _meetings = [..._allMeetings];
   }
 
