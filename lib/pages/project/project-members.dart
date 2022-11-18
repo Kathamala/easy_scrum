@@ -193,88 +193,123 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
   }
 
   void _showAddDialog() {
+    String avisoCheckbox = '';
+    bool marcouUmaCheckbox = false;
+
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Adicionar Integrante'),
-            content: Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          //autofocus: true,
-                          decoration: const InputDecoration(
-                              hintText: 'Nome do novo integrante'),
-                          controller: nomeController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Insira o nome do novo integrante';
-                            } else {
-                              return null;
-                            }
-                          },
-                          style: const TextStyle(fontSize: 14),
-                        ),
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Adicionar Integrante'),
+              content: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                  hintText: 'Nome do novo integrante'),
+                              controller: nomeController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  avisoCheckbox = '';
+                                  return 'Insira o nome do novo integrante';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
+                          const Padding(
+                              padding: EdgeInsets.fromLTRB(0, 24, 0, 24),
+                              child:
+                                  Text('Escolha o cargo do novo integrante')),
+                        ],
                       ),
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(0, 24, 0, 24),
-                          child: Text('Escolha o cargo do novo integrante')),
-                    ],
-                  ),
-                  Column(
-                    children: List.generate(
-                      checkListItems.length,
-                      (index) => CheckboxListTile(
-                        controlAffinity: ListTileControlAffinity.leading,
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(
-                          checkListItems[index]["title"],
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.black,
+                      Column(
+                        children: List.generate(
+                          checkListItems.length,
+                          (index) => CheckboxListTile(
+                            controlAffinity: ListTileControlAffinity.leading,
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            title: Text(
+                              checkListItems[index]["title"],
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                              ),
+                            ),
+                            value: checkListItems[index]["value"],
+                            onChanged: (value) {
+                              setState(() {
+                                for (var element in checkListItems) {
+                                  element["value"] = false;
+                                }
+                                checkListItems[index]["value"] = value;
+                                cargoNovoIntegrante =
+                                    "${checkListItems[index]["title"]}";
+                              });
+                            },
                           ),
                         ),
-                        value: checkListItems[index]["value"],
-                        onChanged: (value) {
-                          setState(() {
-                            for (var element in checkListItems) {
-                              element["value"] = false;
-                            }
-                            checkListItems[index]["value"] = value;
-                            cargoNovoIntegrante =
-                                "${checkListItems[index]["title"]}";
-                          });
-                        },
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          avisoCheckbox,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.red,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                TextButton(
+                    child: const Text('Adicionar'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.primaryPurple,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Cancelar'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              TextButton(
-                  child: const Text('Adicionar'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: AppColors.primaryPurple,
-                  ),
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      _addMember(nomeController.text, cargoNovoIntegrante);
-                    }
-                  })
-            ],
-          );
+                    onPressed: () {
+                      for (var element in checkListItems) {
+                        if (element["value"] == true) {
+                          marcouUmaCheckbox = true;
+                        }
+                      }
+                      if (marcouUmaCheckbox) {
+                        if (formKey.currentState!.validate()) {
+                          avisoCheckbox = '';
+                          marcouUmaCheckbox = false;
+
+                          setState(() {});
+
+                          _addMember(nomeController.text, cargoNovoIntegrante);
+                          nomeController.text = '';
+                        }
+                      } else {
+                        avisoCheckbox = 'Escolha um cargo';
+                        setState(() {});
+                      }
+                    })
+              ],
+            );
+          });
         });
   }
 
