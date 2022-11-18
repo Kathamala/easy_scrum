@@ -35,8 +35,31 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
   final List<ProjectMember> _allMembers = [];
   List<ProjectMember> _members = [];
 
-  //TextEditingController nomeController = TextEditingController();
-  //TextEditingController clienteController = TextEditingController();
+  late TextEditingController nomeController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  //bool checkedScrumMaster = false;
+  //bool checkedProductOwner = false;
+  //bool checkedColaborador = false;
+
+  String cargoNovoIntegrante = "";
+  List checkListItems = [
+    {
+      "id": 0,
+      "value": true,
+      "title": "Scrum Master",
+    },
+    {
+      "id": 1,
+      "value": false,
+      "title": "Product Owner",
+    },
+    {
+      "id": 2,
+      "value": false,
+      "title": "Colaborador",
+    }
+  ];
 
   // Feature to control deletion
   ProjectMember _lastRemoved = ProjectMember(-1, '', '', -1, '');
@@ -51,12 +74,13 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
   }
 
   // TO-DO: to integrate
-  Future<void> _addMember() async {
-    _allMembers.add(ProjectMember(-1, 'Fulano', '', -1, 'Colaborador'));
+  Future<void> _addMember(String nome, String cargo) async {
+    _allMembers.add(ProjectMember(-1, nome, '', -1, cargo));
     Navigator.pop(context);
     setState(() {
       _members = [..._allMembers];
     });
+    formKey.currentState!.reset();
   }
 
   // TO-DO: to integrate
@@ -100,7 +124,7 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
             onTapDown: (TapDownDetails details) {
               _showPopupMenu(details.globalPosition);
             },
-            child: Icon(Icons.more_vert),
+            child: const Icon(Icons.more_vert),
           )),
       onDismissed: (direction) {
         _remove(index);
@@ -135,7 +159,7 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
                     color: AppColors.primaryPurple,
                     fontSize: 14,
                     fontWeight: FontWeight.bold)),
-            Icon(Icons.more_vert),
+            const Icon(Icons.more_vert),
             Text('para opções',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -161,39 +185,132 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
       context: context,
       position: RelativeRect.fromLTRB(left, top, 0, 0),
       items: [
-        PopupMenuItem<String>(
-            child: const Text('Alterar Cargo'), value: 'Alterar Cargo'),
+        const PopupMenuItem<String>(
+            child: Text('Alterar Cargo'), value: 'Alterar Cargo'),
       ],
       elevation: 8.0,
     );
   }
 
   void _showAddDialog() {
+    String avisoCheckbox = '';
+    bool marcouUmaCheckbox = false;
+
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Adicionar Integrante'),
-          content: Text(
-            'Deseja adicionar fulano ao projeto?',
-            style: const TextStyle(fontSize: 14),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: const Text('Continuar'),
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.primaryPurple,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Adicionar Integrante'),
+              content: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                  hintText: 'Nome do novo integrante'),
+                              controller: nomeController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  avisoCheckbox = '';
+                                  return 'Insira o nome do novo integrante';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
+                          const Padding(
+                              padding: EdgeInsets.fromLTRB(0, 24, 0, 24),
+                              child:
+                                  Text('Escolha o cargo do novo integrante')),
+                        ],
+                      ),
+                      Column(
+                        children: List.generate(
+                          checkListItems.length,
+                          (index) => CheckboxListTile(
+                            controlAffinity: ListTileControlAffinity.leading,
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            title: Text(
+                              checkListItems[index]["title"],
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                              ),
+                            ),
+                            value: checkListItems[index]["value"],
+                            onChanged: (value) {
+                              setState(() {
+                                for (var element in checkListItems) {
+                                  element["value"] = false;
+                                }
+                                checkListItems[index]["value"] = value;
+                                cargoNovoIntegrante =
+                                    "${checkListItems[index]["title"]}";
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          avisoCheckbox,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.red,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-              onPressed: _addMember,
-            )
-          ],
-        );
-      },
-    );
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                TextButton(
+                    child: const Text('Adicionar'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.primaryPurple,
+                    ),
+                    onPressed: () {
+                      for (var element in checkListItems) {
+                        if (element["value"] == true) {
+                          marcouUmaCheckbox = true;
+                        }
+                      }
+                      if (marcouUmaCheckbox) {
+                        if (formKey.currentState!.validate()) {
+                          avisoCheckbox = '';
+                          marcouUmaCheckbox = false;
+
+                          setState(() {});
+
+                          _addMember(nomeController.text, cargoNovoIntegrante);
+                          nomeController.text = '';
+                        }
+                      } else {
+                        avisoCheckbox = 'Escolha um cargo';
+                        setState(() {});
+                      }
+                    })
+              ],
+            );
+          });
+        });
   }
 
   List<Widget> getActions() {
@@ -216,7 +333,7 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Integrante> listaMembros = getMembersFromId(1);
+    //List<Integrante> listaMembros = getMembersFromId(1);
 
     return Scaffold(
       appBar: TopAppBar(
@@ -224,7 +341,7 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
         'Integrantes do projeto',
         getActions(),
       ),
-      bottomNavigationBar: BottomAppBarEasyScrum(),
+      bottomNavigationBar: const BottomAppBarEasyScrum(),
       body: Container(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: _getColumn(),

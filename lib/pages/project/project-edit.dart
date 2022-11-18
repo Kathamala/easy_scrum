@@ -38,13 +38,13 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
   }
 
   void _saveChanges() {
-    print('Nome: ' + nomeController.text + '\n');
+    /*print('Nome: ' + nomeController.text + '\n');
     print('Cliente: ' + clienteController.text + '\n');
     print('Data de início: ' + date.toString() + '\n');
     print('Prazo: ' + prazoController.text + '\n');
     print('Duração do sprint: ' + duracaoSprintController.text + '\n');
     print('Quantidade de times: ' + quantidadeTimesController.text + '\n');
-    //Navigator.pop(context);
+    //Navigator.pop(context);*/
   }
 
   @override
@@ -59,10 +59,11 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                   fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
-        bottomNavigationBar: BottomAppBarEasyScrum(),
+        bottomNavigationBar: const BottomAppBarEasyScrum(),
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 5),
+            padding:
+                const EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 5),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -75,12 +76,12 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                         children: <Widget>[
                           TextFormField(
                             keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: 'Nome',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 16.0),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16.0),
                             controller: nomeController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -90,15 +91,15 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                               }
                             },
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           TextFormField(
                             keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: 'Cliente',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 16.0),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16.0),
                             controller: clienteController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -108,10 +109,10 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                               }
                             },
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           Row(
                             children: <Widget>[
-                              Expanded(
+                              const Expanded(
                                 child: Text('Data de início:',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(fontSize: 16.0)),
@@ -120,7 +121,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                                 child: Text(
                                     '${date.day}/${date.month}/${date.year}',
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 18.0)),
+                                    style: const TextStyle(fontSize: 18.0)),
                               ),
                               ElevatedButton(
                                   onPressed: () async {
@@ -139,19 +140,19 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                                   },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.purple),
-                                  child: Icon(Icons.edit_calendar,
+                                  child: const Icon(Icons.edit_calendar,
                                       color: Colors.white))
                             ],
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           TextFormField(
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: 'Prazo (em semanas)',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 16.0),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16.0),
                             controller: prazoController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -161,15 +162,15 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                               }
                             },
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           TextFormField(
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: 'Duração do sprint (em dias)',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 16.0),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16.0),
                             controller: duracaoSprintController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -179,15 +180,15 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                               }
                             },
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           TextFormField(
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: 'Quantidade de times',
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 16.0),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16.0),
                             controller: quantidadeTimesController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -210,7 +211,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                                         _saveChanges();
                                       }
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       'Alterar',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 20.0),
@@ -218,7 +219,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor:
                                             AppColors.primaryPurple,
-                                        textStyle: TextStyle(
+                                        textStyle: const TextStyle(
                                             fontSize: 30,
                                             fontWeight: FontWeight.bold)),
                                   ))),
@@ -226,7 +227,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ]),
