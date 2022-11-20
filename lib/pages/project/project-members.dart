@@ -6,24 +6,6 @@ import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/models/project_member.dart';
 
-class Integrante {
-  String nome;
-  String cargo;
-
-  Integrante(this.nome, this.cargo);
-}
-
-List<Integrante> getMembersFromId(int id) {
-  List<Integrante> novaLista = [];
-  novaLista.add(Integrante('Alex', 'Scrum Master'));
-  novaLista.add(Integrante('Antonio', 'Colaborador'));
-  novaLista.add(Integrante('Daniel', 'Product Owner'));
-  novaLista.add(Integrante('Davi', 'Colaborador'));
-  novaLista.add(Integrante('Tiago', 'Colaborador'));
-
-  return novaLista;
-}
-
 class ProjectMembersPage extends StatefulWidget {
   const ProjectMembersPage({Key? key}) : super(key: key);
 
@@ -37,10 +19,6 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
 
   late TextEditingController nomeController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  //bool checkedScrumMaster = false;
-  //bool checkedProductOwner = false;
-  //bool checkedColaborador = false;
 
   String cargoNovoIntegrante = "";
   List checkListItems = [
@@ -83,6 +61,12 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
     formKey.currentState!.reset();
   }
 
+  Future<void> _alterarCargo(int index, String cargo) async {
+    _allMembers[index].setRole(cargo);
+    Navigator.pop(context);
+    setState(() {});
+  }
+
   // TO-DO: to integrate
   Future<void> _remove(int index) async {
     setState(() {
@@ -122,9 +106,9 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
           subtitle: Text(_members[index].getRole()),
           trailing: GestureDetector(
             onTapDown: (TapDownDetails details) {
-              _showPopupMenu(details.globalPosition);
+              _showChangeRoleDialog(index);
             },
-            child: const Icon(Icons.more_vert),
+            child: const Icon(Icons.edit),
           )),
       onDismissed: (direction) {
         _remove(index);
@@ -151,16 +135,16 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
+          padding: const EdgeInsets.fromLTRB(0, 24, 0, 0),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('Toque no ícone',
+            Text('Toque no ícone ',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: AppColors.primaryPurple,
                     fontSize: 14,
                     fontWeight: FontWeight.bold)),
-            const Icon(Icons.more_vert),
-            Text('para opções',
+            const Icon(Icons.edit),
+            Text(' para alterar o cargo',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: AppColors.primaryPurple,
@@ -175,20 +159,6 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
           ),
         ),
       ],
-    );
-  }
-
-  _showPopupMenu(Offset offset) async {
-    double left = offset.dx;
-    double top = offset.dy;
-    await showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(left, top, 0, 0),
-      items: [
-        const PopupMenuItem<String>(
-            child: Text('Alterar Cargo'), value: 'Alterar Cargo'),
-      ],
-      elevation: 8.0,
     );
   }
 
@@ -313,6 +283,96 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
         });
   }
 
+  void _showChangeRoleDialog(int index) {
+    String avisoCheckbox = '';
+    bool marcouUmaCheckbox = false;
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                  'Escolha o novo cargo de ' + _allMembers[index].getName()),
+              content: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    Column(
+                      children: List.generate(
+                        checkListItems.length,
+                        (index) => CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          title: Text(
+                            checkListItems[index]["title"],
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                          value: checkListItems[index]["value"],
+                          onChanged: (value) {
+                            setState(() {
+                              for (var element in checkListItems) {
+                                element["value"] = false;
+                              }
+                              checkListItems[index]["value"] = value;
+                              cargoNovoIntegrante =
+                                  "${checkListItems[index]["title"]}";
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        avisoCheckbox,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.red,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                TextButton(
+                    child: const Text('Alterar'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.primaryPurple,
+                    ),
+                    onPressed: () {
+                      for (var element in checkListItems) {
+                        if (element["value"] == true) {
+                          marcouUmaCheckbox = true;
+                        }
+                      }
+                      if (marcouUmaCheckbox) {
+                        avisoCheckbox = '';
+                        marcouUmaCheckbox = false;
+
+                        setState(() {});
+
+                        _alterarCargo(index, cargoNovoIntegrante);
+                      } else {
+                        avisoCheckbox = 'Escolha um cargo';
+                        setState(() {});
+                      }
+                    })
+              ],
+            );
+          });
+        });
+  }
+
   List<Widget> getActions() {
     return <Widget>[
       IconButton(
@@ -333,8 +393,6 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
 
   @override
   Widget build(BuildContext context) {
-    //List<Integrante> listaMembros = getMembersFromId(1);
-
     return Scaffold(
       appBar: TopAppBar(
         Key(DateTime.now().millisecondsSinceEpoch.toString()),

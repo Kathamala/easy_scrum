@@ -100,7 +100,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
   Widget _getGeneralInformation() {
     List<Info> list = [
       Info('Cliente', _clientName),
-      Info('Data de Início', '${_startDate.day}/${_startDate.month}/${_startDate.year}'),
+      Info('Data de Início',
+          '${_startDate.day}/${_startDate.month}/${_startDate.year}'),
       Info('Prazo', '$_deadline semanas'),
       Info('Duração do sprint', '$_sprintDuration dias'),
       Info('Quantidade de times', '$_amountTimes times'),
@@ -184,9 +185,10 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                     ),
                     onPressed: () {
                       Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProjectActivitiesPage()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ProjectActivitiesPage()));
                     },
                     child: Row(children: [
                       Icon(
@@ -194,7 +196,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         size: 28,
                       ),
                       Text(
-                        'Atividades',
+                        '            Atividades',
                         style: TextStyle(
                           color: AppColors.black,
                           fontSize: 12,
@@ -223,8 +225,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           size: 28,
                         ),
                         Text(
-                          'Integrantes',
-                          //textAlign: TextAlign.right,
+                          '           Integrantes',
                           style: TextStyle(
                             color: AppColors.black,
                             fontSize: 12,
@@ -248,7 +249,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         size: 28,
                       ),
                       Text(
-                        'Reuniões',
+                        '             Reuniões',
                         style: TextStyle(
                           color: AppColors.black,
                           fontSize: 12,
