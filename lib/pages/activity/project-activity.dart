@@ -1,7 +1,6 @@
-import 'package:easy_scrum/pages/project/activity-creation.dart';
-import 'package:easy_scrum/pages/project/activity-details.dart';
+import 'package:easy_scrum/pages/activity/activity-creation.dart';
+import 'package:easy_scrum/pages/activity/activity-details.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
@@ -17,15 +16,6 @@ class ProjectActivitiesPage extends StatefulWidget {
 class _ProjectActivitiesPageState extends State<ProjectActivitiesPage> {
   final List<Activity> _activities = [];
 
-  // TO-DO: to integrate
-  Future<void> _logout() async {}
-
-  Future<void> _openLink(String link) async {
-    Uri url = Uri.parse(link);
-    if (!await launchUrl(url)) {
-      throw 'Could not launch $url';
-    }
-  }
 
   Widget _getActivities() {
     return Card(
@@ -47,7 +37,7 @@ class _ProjectActivitiesPageState extends State<ProjectActivitiesPage> {
                 ),
               ),
               const Padding(
-                padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+                padding: EdgeInsets.fromLTRB(8, 12, 8, 8),
               ),
               Column(
                 children: [
@@ -61,7 +51,7 @@ class _ProjectActivitiesPageState extends State<ProjectActivitiesPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ActivityDetailsPage(),
+                            builder: (context) => const ActivityDetailsPage(),
                           ),
                         );
                         //print("Detalhes da atividade : " + item.getDescription());
@@ -83,25 +73,6 @@ class _ProjectActivitiesPageState extends State<ProjectActivitiesPage> {
               const Padding(
                 padding: EdgeInsets.fromLTRB(8, 12, 8, 10),
               ),
-              Column(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.add_circle_outline_rounded),
-                    color: Colors.purple,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ActivityCreationPage(),
-                        ),
-                      );
-                    },
-                    iconSize: 30,
-                  )],
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(8, 24, 8, 10),
-              ),
             ]),
 
       ),
@@ -112,10 +83,13 @@ class _ProjectActivitiesPageState extends State<ProjectActivitiesPage> {
   List<Widget> _getActions() {
     return [
       IconButton(
-        icon: const Icon(Icons.logout),
-        tooltip: 'Sair',
-        onPressed: _logout,
-      ),
+        onPressed: (){
+          Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ActivityCreationPage(),
+            ),
+          );
+        },
+        icon: const Icon(Icons.add))
     ];
   }
 
