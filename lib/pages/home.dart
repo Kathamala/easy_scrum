@@ -39,7 +39,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   // TO-DO: to integrate
-  Future<void> _logout() async {}
+  Future<void> _logout() async {
+    Navigator.of(context).pop();
+  }
 
   Future<void> _openLink(String link) async {
     Uri url = Uri.parse(link);

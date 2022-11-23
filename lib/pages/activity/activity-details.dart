@@ -7,37 +7,75 @@ import 'package:flutter/material.dart';
 import '../../models/info.dart';
 
 class ActivityDetailsPage extends StatefulWidget {
-  const ActivityDetailsPage ({Key? key}) : super(key: key);
+  const ActivityDetailsPage({Key? key}) : super(key: key);
 
   @override
-  State<ActivityDetailsPage > createState() => _ActivityDetailsPageState();
+  State<ActivityDetailsPage> createState() => _ActivityDetailsPageState();
 }
 
-class _ActivityDetailsPageState extends State<ActivityDetailsPage>{
-
+class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   @override
   void initState() {
     super.initState();
   }
+
   final String _name = 'Atividade X';
   final String _team = 'Delta';
   final DateTime _startDate = DateTime.now();
   final String _deadline = '16';
   final String _description = 'Fazer X';
 
+  // TO-DO: to integrate
+  Future<void> _remove() async {
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
+  void _showDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Alerta'),
+          content: const Text(
+            'Deseja mesmo excluir a atividade X?',
+            style: TextStyle(fontSize: 14),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Cancelar"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text("Continuar"),
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primaryPurple,
+              ),
+              onPressed: _remove,
+            )
+          ],
+        );
+      },
+    );
+  }
+
   List<Widget> _getActions() {
     return <Widget>[
       IconButton(
-        icon: const Icon(Icons.edit),
-        tooltip: 'Editar atividade',
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ActivityEditPage(),
-            ),
-          );
-        }
+          icon: const Icon(Icons.edit),
+          tooltip: 'Editar atividade',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ActivityEditPage(),
+              ),
+            );
+          }),
+      IconButton(
+        icon: const Icon(Icons.delete),
+        tooltip: 'Excluir Reunião',
+        onPressed: _showDeleteDialog,
       ),
     ];
   }
@@ -46,7 +84,8 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>{
     List<Info> list = [
       Info('Nome', _name),
       Info('Time', _team),
-      Info('Data de Início', '${_startDate.day}/${_startDate.month}/${_startDate.year}'),
+      Info('Data de Início',
+          '${_startDate.day}/${_startDate.month}/${_startDate.year}'),
       Info('Prazo', '$_deadline semanas'),
       Info('Descrição', '$_description'),
     ];
@@ -100,25 +139,24 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage>{
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: TopAppBar(
         Key(DateTime.now().millisecondsSinceEpoch.toString()),
-        'Projeto X',
+        'Atividade X',
         _getActions(),
       ),
-      bottomNavigationBar: BottomAppBarEasyScrum(),
+      bottomNavigationBar: const BottomAppBarEasyScrum(),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               _getGeneralInformation(),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
             ],

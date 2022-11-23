@@ -3,14 +3,13 @@ import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:flutter/material.dart';
 
 class ActivityCreationPage extends StatefulWidget {
-  const ActivityCreationPage ({Key? key}) : super(key: key);
+  const ActivityCreationPage({Key? key}) : super(key: key);
 
   @override
-  State<ActivityCreationPage > createState() => _ActivityCreationPageState();
+  State<ActivityCreationPage> createState() => _ActivityCreationPageState();
 }
 
-class _ActivityCreationPageState extends State<ActivityCreationPage>{
-
+class _ActivityCreationPageState extends State<ActivityCreationPage> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController equipeController = TextEditingController();
   TextEditingController prazoController = TextEditingController();
@@ -47,7 +46,7 @@ class _ActivityCreationPageState extends State<ActivityCreationPage>{
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.white,
-          title: const Text("Criação de atividade",
+          title: const Text("Adicionar Atividade",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
@@ -77,7 +76,7 @@ class _ActivityCreationPageState extends State<ActivityCreationPage>{
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
                             style:
-                            TextStyle(color: Colors.black, fontSize: 16.0),
+                                TextStyle(color: Colors.black, fontSize: 16.0),
                             controller: nomeController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -95,7 +94,7 @@ class _ActivityCreationPageState extends State<ActivityCreationPage>{
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
                             style:
-                            TextStyle(color: Colors.black, fontSize: 16.0),
+                                TextStyle(color: Colors.black, fontSize: 16.0),
                             controller: descricaoController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -113,7 +112,7 @@ class _ActivityCreationPageState extends State<ActivityCreationPage>{
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
                             style:
-                            TextStyle(color: Colors.black, fontSize: 16.0),
+                                TextStyle(color: Colors.black, fontSize: 16.0),
                             controller: equipeController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -166,7 +165,7 @@ class _ActivityCreationPageState extends State<ActivityCreationPage>{
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
                             style:
-                            TextStyle(color: Colors.black, fontSize: 16.0),
+                                TextStyle(color: Colors.black, fontSize: 16.0),
                             controller: prazoController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -178,8 +177,10 @@ class _ActivityCreationPageState extends State<ActivityCreationPage>{
                           ),
                           Padding(padding: EdgeInsets.only(top: 10.0)),
                           Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(20, 30, 15, 10),
+                              padding: const EdgeInsets.only(
+                                top: 20.0,
+                                bottom: 20.0,
+                              ),
                               child: SizedBox(
                                   height: 50.0,
                                   child: ElevatedButton(
@@ -189,13 +190,13 @@ class _ActivityCreationPageState extends State<ActivityCreationPage>{
                                       }
                                     },
                                     child: Text(
-                                      "Criar atividade",
+                                      "Adicionar",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 20.0),
                                     ),
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor:
-                                        AppColors.primaryPurple,
+                                            AppColors.primaryPurple,
                                         textStyle: TextStyle(
                                             fontSize: 30,
                                             fontWeight: FontWeight.bold)),
@@ -212,4 +213,3 @@ class _ActivityCreationPageState extends State<ActivityCreationPage>{
         ));
   }
 }
-

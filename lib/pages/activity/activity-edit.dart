@@ -3,14 +3,13 @@ import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:flutter/material.dart';
 
 class ActivityEditPage extends StatefulWidget {
-  const ActivityEditPage ({Key? key}) : super(key: key);
+  const ActivityEditPage({Key? key}) : super(key: key);
 
   @override
   State<ActivityEditPage> createState() => _ActivityEditPageState();
 }
 
-class _ActivityEditPageState extends State<ActivityEditPage>{
-
+class _ActivityEditPageState extends State<ActivityEditPage> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController equipeController = TextEditingController();
   TextEditingController prazoController = TextEditingController();
@@ -47,19 +46,20 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.white,
-          title: const Text("Edição de atividade",
+          title: const Text("Editar Atividade",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
-        bottomNavigationBar: BottomAppBarEasyScrum(
+        bottomNavigationBar: const BottomAppBarEasyScrum(
           currentScreen: "activity-creation",
         ),
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 5),
+            padding:
+                const EdgeInsets.only(left: 5, top: 5, right: 5, bottom: 5),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -72,12 +72,12 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
                         children: <Widget>[
                           TextFormField(
                             keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: "Nome",
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
-                            style:
-                            TextStyle(color: Colors.black, fontSize: 16.0),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16.0),
                             controller: nomeController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -87,15 +87,15 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
                               }
                             },
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           TextFormField(
                             keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: "Descrição da atividade",
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
-                            style:
-                            TextStyle(color: Colors.black, fontSize: 16.0),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16.0),
                             controller: descricaoController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -105,15 +105,15 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
                               }
                             },
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           TextFormField(
                             keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: "Equipe",
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
-                            style:
-                            TextStyle(color: Colors.black, fontSize: 16.0),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16.0),
                             controller: equipeController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -123,10 +123,10 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
                               }
                             },
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           Row(
                             children: <Widget>[
-                              Expanded(
+                              const Expanded(
                                 child: Text("Data de início:",
                                     textAlign: TextAlign.left,
                                     style: TextStyle(fontSize: 16.0)),
@@ -135,7 +135,7 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
                                 child: Text(
                                     "${date.day}/${date.month}/${date.year}",
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 18.0)),
+                                    style: const TextStyle(fontSize: 18.0)),
                               ),
                               ElevatedButton(
                                   onPressed: () async {
@@ -154,19 +154,19 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
                                   },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.purple),
-                                  child: Icon(Icons.edit_calendar,
+                                  child: const Icon(Icons.edit_calendar,
                                       color: Colors.white))
                             ],
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           TextFormField(
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: "Prazo (em semanas)",
                                 labelStyle: TextStyle(color: Colors.black)),
                             textAlign: TextAlign.left,
-                            style:
-                            TextStyle(color: Colors.black, fontSize: 16.0),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16.0),
                             controller: prazoController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -176,10 +176,12 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
                               }
                             },
                           ),
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(20, 30, 15, 10),
+                              padding: const EdgeInsets.only(
+                                top: 20.0,
+                                bottom: 20.0,
+                              ),
                               child: SizedBox(
                                   height: 50.0,
                                   child: ElevatedButton(
@@ -188,15 +190,15 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
                                         _editProject();
                                       }
                                     },
-                                    child: Text(
-                                      "Editar atividade",
+                                    child: const Text(
+                                      "Editar",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 20.0),
                                     ),
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor:
-                                        AppColors.primaryPurple,
-                                        textStyle: TextStyle(
+                                            AppColors.primaryPurple,
+                                        textStyle: const TextStyle(
                                             fontSize: 30,
                                             fontWeight: FontWeight.bold)),
                                   ))),
@@ -204,7 +206,7 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ]),
@@ -212,4 +214,3 @@ class _ActivityEditPageState extends State<ActivityEditPage>{
         ));
   }
 }
-

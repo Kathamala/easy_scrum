@@ -181,7 +181,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondaryGrey,
-                      fixedSize: Size(242, 20),
+                      fixedSize: Size(270, 20),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -195,12 +195,15 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         Icons.list,
                         size: 28,
                       ),
-                      Text(
-                        '            Atividades',
-                        style: TextStyle(
-                          color: AppColors.black,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: Text(
+                          'Atividades',
+                          style: TextStyle(
+                            color: AppColors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       )
                     ]),
@@ -208,7 +211,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondaryGrey,
-                      fixedSize: Size(242, 20),
+                      fixedSize: Size(270, 20),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -224,12 +227,15 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           Icons.people,
                           size: 28,
                         ),
-                        Text(
-                          '           Integrantes',
-                          style: TextStyle(
-                            color: AppColors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Text(
+                            'Integrantes',
+                            style: TextStyle(
+                              color: AppColors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         )
                       ],
@@ -238,7 +244,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondaryGrey,
-                      fixedSize: Size(242, 20),
+                      fixedSize: Size(270, 20),
                     ),
                     onPressed: () {
                       _openMeetings(Project(1, 'Easy Scrum'));
@@ -248,12 +254,15 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         Icons.video_call_outlined,
                         size: 28,
                       ),
-                      Text(
-                        '             Reuniões',
-                        style: TextStyle(
-                          color: AppColors.black,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: Text(
+                          'Reuniões',
+                          style: TextStyle(
+                            color: AppColors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       )
                     ]),

@@ -396,7 +396,7 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
     return Scaffold(
       appBar: TopAppBar(
         Key(DateTime.now().millisecondsSinceEpoch.toString()),
-        'Integrantes do projeto',
+        'Integrantes do Projeto',
         getActions(),
       ),
       bottomNavigationBar: const BottomAppBarEasyScrum(),
