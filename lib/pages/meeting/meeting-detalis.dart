@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
@@ -8,6 +9,7 @@ import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/models/info.dart';
 import 'package:easy_scrum/models/meeting.dart';
 import 'package:easy_scrum/pages/meeting/meeting.dart';
+import 'package:easy_scrum/service/meeting.dart';
 import 'package:easy_scrum/utils/date.dart';
 
 class MeetingDetailsPage extends StatefulWidget {
@@ -27,10 +29,12 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
     }
   }
 
-  // TO-DO: to integrate
   Future<void> _remove() async {
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    var response = await http.delete(MeetingService.deleteMeeting(widget._meeting.getId()));
+    if (response.statusCode == 200) {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    }
   }
 
   void _showDeleteDialog() {
@@ -40,7 +44,7 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
         return AlertDialog(
           title: const Text('Alerta'),
           content: Text(
-            'Deseja mesmo excluir a reunião ${widget._meeting.getName()}?',
+            'Deseja mesmo excluir a reunião ${widget._meeting.getTitle()}?',
             style: const TextStyle(fontSize: 14),
           ),
           actions: <Widget>[
@@ -110,10 +114,9 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
 
   Widget _getGeneralInformation() {
     List<Info> list = [
-      Info('Nome', widget._meeting.getName()),
       Info('Link', widget._meeting.getLink()),
       Info('Data/Hora', Datetime.formatDatetime(widget._meeting.getDatetime())),
-      Info('Categoria', widget._meeting.getCategory().getName()),
+      Info('Categoria', widget._meeting.getCategory()),
       Info('Projeto', widget._meeting.getProject().getName()),
       Info('Descrição', widget._meeting.getDescription())
     ];
@@ -190,7 +193,7 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
                         child: Text(
-                          item.getName(),
+                          '${item.getName()} (${item.getEmail()})',
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                             fontSize: 14.0,
@@ -223,7 +226,7 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
     return Scaffold(
       appBar: TopAppBar(
         Key(DateTime.now().millisecondsSinceEpoch.toString()),
-        widget._meeting.getName(),
+        widget._meeting.getCategory(),
         getActions(),
       ),
       bottomNavigationBar: const BottomAppBarEasyScrum(),

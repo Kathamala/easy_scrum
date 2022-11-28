@@ -25,6 +25,16 @@ class MultiSelectChip extends StatefulWidget {
 }
 
 class _MultiSelectChipState extends State<MultiSelectChip> {
+  bool _check(Item item) {
+    bool isPresent = false;
+    for (var element in widget._selectedChoices) {
+      if (element.getId() == item.getId()) {
+        isPresent = true;
+      }
+    }
+    return isPresent;
+  }
+
   _buildChoiceList() {
     List<Widget> choices = [];
     for (var item in widget._list) {
@@ -32,10 +42,10 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
         padding: const EdgeInsets.all(2.0),
         child: ChoiceChip(
           label: Text(item.getName()),
-          selected: widget._selectedChoices.contains(item),
+          selected: _check(item),
           onSelected: (selected) {
             if (widget._selectedChoices.length == (widget.maxSelection ?? -1) &&
-                !widget._selectedChoices.contains(item)) {
+                !_check(item)) {
               widget.onMaxSelected?.call(widget._selectedChoices);
             } else {
               setState(() {

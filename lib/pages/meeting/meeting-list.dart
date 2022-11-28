@@ -1,12 +1,13 @@
 // ignore_for_file: file_names
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:easy_scrum/service/meeting.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/design/colors.dart';
-import 'package:easy_scrum/models/category_meeting.dart';
 import 'package:easy_scrum/models/meeting.dart';
-import 'package:easy_scrum/models/person.dart';
 import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/pages/meeting/meeting.dart';
 import 'package:easy_scrum/pages/meeting/meeting-detalis.dart';
@@ -21,44 +22,75 @@ class MeetingListPage extends StatefulWidget {
 }
 
 class _MeetingListPageState extends State<MeetingListPage> {
-  final List<Meeting> _allMeetings = [];
+  List<Meeting> _allMeetings = [];
   List<Meeting> _meetings = [];
 
   // Feature to control deletion
-  Meeting _lastRemoved = Meeting(-1, '', '', '', DateTime.now(), Project(-1, ''), CategoryMeeting(-1, ''), []);
-  int _lastRemovedPos = -1;
+  Meeting? _lastRemoved;
+  int? _lastRemovedPos;
 
   final TextEditingController _filterController = TextEditingController();
 
-  // TO-DO: to integrate
+  Future<void> _findAll(int limit, int page) async {
+    Uri uri;
+    if (widget._project == null) {
+      uri = MeetingService.getMeetingsByPerson(1, limit, page);
+    } else {
+      uri = MeetingService.getMeetingsByProjetc(1, widget._project!.getId(), limit, page);
+    }
+    var response = await http.get(uri);
+    if (response.statusCode == 200) {
+      Iterable list = json.decode(response.body);
+      setState(() {
+        _allMeetings = List<Meeting>.from(list.map((model) => Meeting.fromJson(model)));
+        _meetings = [..._allMeetings];
+      });
+    } else {
+      /** Error */
+    }
+  }
+
   Future<void> _refresh() async {
     setState(() {
       _filterController.text = '';
-      _meetings = [..._allMeetings];
     });
+    await _findAll(10, 0);
     await Future.delayed(const Duration(seconds: 1));
   }
 
-  // TO-DO: to integrate
   Future<void> _filter(String value) async {
     setState(() {
-      _meetings = _allMeetings.where((item) => item.getTitle().contains(value)).toList();
+      _meetings = _allMeetings
+          .where((item) => item.getTitle().contains(value))
+          .toList();
     });
   }
 
-  // TO-DO: to integrate
   Future<void> _remove(int index) async {
     setState(() {
       _lastRemoved = _meetings[index];
       _lastRemovedPos = index;
       _meetings.removeAt(index);
     });
+    await Future.delayed(const Duration(seconds: 4));
+    if (_lastRemoved != null) {
+      var response = await http.delete(MeetingService.deleteMeeting(_lastRemoved!.getId()));
+      if (response.statusCode == 200) {
+        setState(() {
+          _lastRemoved = null;
+          _lastRemovedPos = -1;
+        });
+      } else {
+        /** Error */
+      }
+    }
   }
 
-  // TO-DO: to integrate
   Future<void> _cancelRemove() async {
     setState(() {
-      _meetings.insert(_lastRemovedPos, _lastRemoved);
+      _meetings.insert(_lastRemovedPos!, _lastRemoved!);
+      _lastRemoved = null;
+      _lastRemovedPos = -1;
     });
   }
 
@@ -134,9 +166,9 @@ class _MeetingListPageState extends State<MeetingListPage> {
       onDismissed: (direction) {
         _remove(index);
         SnackBar snack = SnackBar(
-          content: Text('Reunião ${_lastRemoved.getTitle()} removida'),
+          content: Text('Reunião ${_lastRemoved!.getTitle()} removida'),
           action: SnackBarAction(label: 'Desfazer', onPressed: _cancelRemove),
-          duration: const Duration(seconds: 5),
+          duration: const Duration(seconds: 3),
         );
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(snack);
@@ -179,9 +211,7 @@ class _MeetingListPageState extends State<MeetingListPage> {
   @override
   void initState() {
     super.initState();
-    _allMeetings.add(Meeting(0, 'My Daily', 'https://meet.google.com/', 'Alguma descrição feita', DateTime.now(), Project(1, 'Easy Scrum'), CategoryMeeting(1, 'Daily'), [Person(0, 'Fulano de Tal', '', '', '')]));
-    _allMeetings.add(Meeting(1, 'My Stand-up', 'https://meet.google.com/', 'Alguma descrição feita', DateTime.now(), Project(1, 'Easy Scrum'), CategoryMeeting(2, 'Stand-up'), [Person(0, 'Fulano de Tal', '', '', '')]));
-    _meetings = [..._allMeetings];
+    _findAll(10, 0);
   }
 
   @override

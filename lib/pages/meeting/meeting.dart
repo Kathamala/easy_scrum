@@ -1,12 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/components/MultiSelectChip.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/design/colors.dart';
-import 'package:easy_scrum/models/category_meeting.dart';
 import 'package:easy_scrum/models/item.dart';
 import 'package:easy_scrum/models/meeting.dart';
 import 'package:easy_scrum/models/project.dart';
+import 'package:easy_scrum/service/project.dart';
 
 class MeetingPage extends StatefulWidget {
   final Meeting? _meeting;
@@ -20,18 +22,65 @@ class MeetingPage extends StatefulWidget {
 class _MeetingPageState extends State<MeetingPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final List<Project> _projects = [];
-  final List<CategoryMeeting> _categories = [];
-  final List<Item> _people = [];
-  late List<Item> _chosenPeople = [];
+  List<Project> _projects = [];
+  List<Item> _people = [];
+  List<Item> _chosenPeople = [];
 
-  final TextEditingController _nameController = TextEditingController();
+  final List<String> _categories = [];
+
   final TextEditingController _linkController = TextEditingController();
   final TextEditingController _datetimeController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  Project _projectController = Project(-1, '');
-  CategoryMeeting _categoryController = CategoryMeeting(-1, '');
+  Project? _projectController;
+  String? _categoryController;
+
+  Future<void> _findProject() async {
+    var response = await http.get(ProjectService.getProject(_projectController!.getId()));
+    if (response.statusCode == 200) {
+      Project project = Project.fromJson(json.decode(response.body));
+      List<Item> people = [];
+      people.add(Item(project.getProductOwner().getPerson().getId(), project.getProductOwner().getPerson().getName()));
+      people.add(Item(project.getScrumMaster().getPerson().getId(), project.getScrumMaster().getPerson().getName()));
+      project.getTeams().forEach((item) {
+        item.getParticipants().forEach((element) {
+          people.add(Item(element.getDeveloper().getPerson().getId(), element.getDeveloper().getPerson().getName()));
+        });
+      });
+      setState(() {
+        _people = [...people];
+      });
+      if (widget._meeting != null) {
+        List<Item> guests = [];
+        widget._meeting!.getPeople().forEach((element) {
+          guests.add(Item(element.getId(), element.getName()));
+        });
+        setState(() {
+          _chosenPeople = [...guests];
+        });
+      }
+    } else {
+      /** Error */
+    }
+  }
+
+  Future<void> _findProjects(int limit, int page) async {
+    var response = await http.get(ProjectService.getProjectsByPerson(1, limit, page));
+    if (response.statusCode == 200) {
+      Iterable list = json.decode(response.body);
+      setState(() {
+        _projects = [
+          ...List<Project>.from(list.map((model) => Project.fromJson(model)))
+        ];
+        if (_projects.isEmpty == false) {
+          _projectController = _projects.first;
+          _findProject();
+        }
+      });
+    } else {
+      /** Error */
+    }
+  }
 
   String _getTitle() {
     if (widget._meeting == null) {
@@ -49,7 +98,6 @@ class _MeetingPageState extends State<MeetingPage> {
 
   void _setInfo() {
     setState(() {
-      _nameController.text = widget._meeting!.getName();
       _linkController.text = widget._meeting!.getLink();
       _datetimeController.text = widget._meeting!.getDatetime().toString();
       for (var element in _projects) {
@@ -58,7 +106,7 @@ class _MeetingPageState extends State<MeetingPage> {
         }
       }
       for (var element in _categories) {
-        if (element.getId() == widget._meeting!.getCategory().getId()) {
+        if (element == widget._meeting!.getCategory()) {
           _categoryController = element;
         }
       }
@@ -70,35 +118,9 @@ class _MeetingPageState extends State<MeetingPage> {
     });
   }
 
-  // TO-DO: to integrate 
+  // TO-DO: to integrate
   void _submit() {
     Navigator.of(context).pop();
-  }
-
-  Widget _getNameField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Nome *',
-        helperText: 'Ex: Reunião Urgente',
-        labelStyle: TextStyle(
-          color: AppColors.black,
-          fontSize: 12,
-        ),
-      ),
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: AppColors.black,
-      ),
-      keyboardType: TextInputType.text,
-      controller: _nameController,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Insira o nome da reunião!';
-        } else {
-          return null;
-        }
-      },
-    );
   }
 
   Widget _getLinkField() {
@@ -157,32 +179,24 @@ class _MeetingPageState extends State<MeetingPage> {
     return Padding(
       padding:
           const EdgeInsets.only(left: 0.0, right: 0.0, top: 10.0, bottom: 0.0),
-      child: DropdownButtonFormField<CategoryMeeting>(
+      child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           labelText: 'Categoria *',
           labelStyle: TextStyle(
             color: AppColors.black,
           ),
         ),
-        items: _categories
-            .map<DropdownMenuItem<CategoryMeeting>>((CategoryMeeting value) {
-          return DropdownMenuItem<CategoryMeeting>(
+        items: _categories.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
             value: value,
-            child: Text(value.getName()),
+            child: Text(value.toLowerCase()),
           );
         }).toList(),
         value: _categoryController,
-        onChanged: (CategoryMeeting? value) {
+        onChanged: (String? value) {
           setState(() {
             _categoryController = value!;
           });
-        },
-        validator: (value) {
-          if (value!.getId() == 0) {
-            return 'Selecione uma categoria!';
-          } else {
-            return null;
-          }
         },
       ),
     );
@@ -278,7 +292,6 @@ class _MeetingPageState extends State<MeetingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _getNameField(),
           _getLinkField(),
           _getDatetimeField(),
           _getCategory(),
@@ -317,7 +330,6 @@ class _MeetingPageState extends State<MeetingPage> {
     );
   }
 
-  // 1º Modo de selecionar participantes
   List<Widget> _getActions() {
     return <Widget>[
       IconButton(
@@ -328,33 +340,21 @@ class _MeetingPageState extends State<MeetingPage> {
     ];
   }
 
-  // 2º Modo de selecionar participantes
-  // Widget getPeople() {
-  //   return Padding(
-  //     padding:
-  //         const EdgeInsets.only(left: 0.0, right: 0.0, top: 10.0, bottom: 0.0),
-  //     child: TextButton(
-  //       style: TextButton.styleFrom(
-  //         foregroundColor: AppColors.primaryPurple,
-  //       ),
-  //       child: const Text('Selecionar participantes'),
-  //       onPressed: () => _showPeopleDialog(),
-  //     ),
-  //   );
-  // }
-
   @override
   void initState() {
     super.initState();
-    _projects.add(Project(0, 'Escolha uma opção'));
-    _projects.add(Project(1, 'Easy Scrum'));
-    _categories.add(CategoryMeeting(0, 'Escolha uma opção'));
-    _categories.add(CategoryMeeting(1, 'Daily'));
-    _categories.add(CategoryMeeting(2, 'Stand-up'));
-    _people.add(Item(0, 'Fulano de Tal'));
-    _people.add(Item(1, 'Cicrano de Tal'));
-    _projectController = _projects.first;
+  
+    _findProjects(10, 0);
+
+    _categories.add('DEFAULT');
+    _categories.add('DAILY');
+    _categories.add('PLANNING');
+    _categories.add('REVIEW');
+    _categories.add('RETROSPECTIVE');
+    _categories.add('PRODUCT_BACKLOG_REFINEMENT');
+
     _categoryController = _categories.first;
+  
     if (widget._meeting == null) {
     } else {
       _setInfo();

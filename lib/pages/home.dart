@@ -1,13 +1,19 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/design/colors.dart';
-import 'package:easy_scrum/models/category_meeting.dart';
 import 'package:easy_scrum/models/meeting.dart';
-import 'package:easy_scrum/models/person.dart';
 import 'package:easy_scrum/models/project.dart';
+import 'package:easy_scrum/models/company.dart';
+import 'package:easy_scrum/models/person.dart';
+import 'package:easy_scrum/models/product_backlog.dart';
+import 'package:easy_scrum/models/product_owner.dart';
+import 'package:easy_scrum/models/scrum_master.dart';
 import 'package:easy_scrum/pages/meeting/meeting-list.dart';
 import 'package:easy_scrum/pages/project/project-details.dart';
+import 'package:easy_scrum/service/meeting.dart';
 import 'package:easy_scrum/utils/date.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +25,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Project> _projects = [];
-  final List<Meeting> _meetings = [];
+  List<Meeting> _meetings = [];
+
+  Future<void> _findMeetings() async {
+    var response = await http.get(MeetingService.getMeetingsToday(1));
+    if (response.statusCode == 200) {
+      Iterable list = json.decode(response.body);
+      setState(() {
+        _meetings =
+            List<Meeting>.from(list.map((model) => Meeting.fromJson(model)));
+      });
+    } else {
+      /** Error */
+    }
+  }
 
   void _openProject(Project project) {
     Navigator.push(context,
@@ -159,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: const EdgeInsets.only(right: 10),
                               child: Text(
-                                item.getName(),
+                                item.getCategory(),
                                 style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 12,
@@ -215,32 +234,29 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _projects.add(
-      Project(1, 'Easy Scrum'),
-    );
-    _meetings.add(
-      Meeting(
-        0,
-        'My Daily',
-        'https://meet.google.com/',
-        'Alguma descrição feita',
-        DateTime.now(),
-        Project(1, 'Easy Scrum'),
-        CategoryMeeting(1, 'Daily'),
-        [Person(0, 'Fulano de Tal', '', '', '')],
-      ),
-    );
-    _meetings.add(
-      Meeting(
+      Project(
         1,
-        'My Stand-up',
-        'https://meet.google.com/',
-        'Alguma descrição feita',
+        'Easy Scrum',
         DateTime.now(),
-        Project(1, 'Easy Scrum'),
-        CategoryMeeting(2, 'Stand-up'),
-        [Person(0, 'Fulano de Tal', '', '', '')],
+        DateTime.now(),
+        '',
+        ProductOwner(
+          1,
+          Person(1, '', '', '', '', ''),
+          Company(1, '', ''),
+        ),
+        ScrumMaster(
+          1,
+          Person(1, '', '', '', '', ''),
+        ),
+        ProductBacklog(1, {}),
+        {},
+        '',
+        '',
       ),
     );
+
+    _findMeetings();
   }
 
   @override

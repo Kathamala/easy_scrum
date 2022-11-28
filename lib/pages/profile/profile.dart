@@ -155,7 +155,7 @@ class _ProfilePage extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _person = Person(0, 'Gabi', 'Gabi', 'gabi@gmail.com', '');
+    _person = Person(0, 'Gabi', 'Gabi', 'gabi@gmail.com', '', '');
   }
 
   @override
