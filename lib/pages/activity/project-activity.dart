@@ -97,21 +97,20 @@ class _ProjectActivitiesPageState extends State<ProjectActivitiesPage> {
   void initState() {
     super.initState();
     _activities.add(
-      Activity(1, 'Elaborar modelo EER'),
+      Activity(1, null, null, null, 'Elaborar modelo EER'),
     );
     _activities.add(
-      Activity(2, 'Definir arquitetura da API'),
+      Activity(2, null, null, null, 'Definir arquitetura da API'),
     );
     _activities.add(
-      Activity(3, 'Criar estrutura da API'),
+      Activity(3, null, null, null, 'Criar estrutura da API'),
     );
     _activities.add(
-      Activity(4, 'Documentar problema e solução'),
+      Activity(4, null, null, null, 'Documentar problema e solução'),
     );
     _activities.add(
-      Activity(5, 'Prototipar telas'),
+      Activity(5, null, null, null, 'Prototipar telas'),
     );
-
   }
 
   @override

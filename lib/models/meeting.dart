@@ -1,94 +1,116 @@
-import 'package:easy_scrum/models/category_meeting.dart';
+import 'package:easy_scrum/models/guest.dart';
 import 'package:easy_scrum/models/person.dart';
 import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/utils/date.dart';
 
 class Meeting {
   late int _id;
-  late String _name;
   late String _link;
   late String _description;
   late DateTime _datetime;
   late Project _project;
-  late CategoryMeeting _category;
+  late String _category;
   late List<Person> _people;
+  late Set<Guest> _guests;
 
-  Meeting(int id, String name, String link, String description, DateTime datetime, Project project, CategoryMeeting category, List<Person> people) {
-    setId(id);
-    setName(name);
-    setLink(link);
-    setDescription(description);
-    setDatetime(datetime);
-    setProject(project);
-    setCategory(category);
-    setPeople(people);
+  Meeting(
+    int? id,
+    String? link,
+    String? description,
+    DateTime? datetime,
+    Project? project,
+    String? category,
+    List<Person>? people,
+    Set<Guest>? guests
+  ) {
+    setId(id!);
+    setLink(link!);
+    setDescription(description!);
+    setDatetime(datetime!);
+    setProject(project!);
+    setCategory(category!);
+    setPeople(people!);
+    setGuests(guests!);
   }
 
-	int getId() {
-		return _id;
-	}
+  int getId() {
+    return _id;
+  }
 
-	void setId(int id) {
-		_id = id;
-	}
+  void setId(int id) {
+    _id = id;
+  }
 
-	String getName() {
-		return _name;
-	}
+  String getLink() {
+    return _link;
+  }
 
-	void setName(String name) {
-		_name = name;
-	}
+  void setLink(String link) {
+    _link = link;
+  }
 
-	String getLink() {
-		return _link;
-	}
+  String getDescription() {
+    return _description;
+  }
 
-	void setLink(String link) {
-		_link = link;
-	}
+  void setDescription(String description) {
+    _description = description;
+  }
 
-	String getDescription() {
-		return _description;
-	}
+  DateTime getDatetime() {
+    return _datetime;
+  }
 
-	void setDescription(String description) {
-		_description = description;
-	}
+  void setDatetime(DateTime datetime) {
+    _datetime = datetime;
+  }
 
-	DateTime getDatetime() {
-		return _datetime;
-	}
+  Project getProject() {
+    return _project;
+  }
 
-	void setDatetime(DateTime datetime) {
-		_datetime = datetime;
-	}
+  void setProject(Project project) {
+    _project = project;
+  }
 
-	Project getProject() {
-		return _project;
-	}
+  String getCategory() {
+    return _category;
+  }
 
-	void setProject(Project project) {
-		_project = project;
-	}
+  void setCategory(String category) {
+    _category = category;
+  }
 
-	CategoryMeeting getCategory() {
-		return _category;
-	}
+  List<Person> getPeople() {
+    return _people;
+  }
 
-	void setCategory(CategoryMeeting category) {
-		_category = category;
-	}
+  void setPeople(List<Person> people) {
+    _people = people;
+  }
 
-	List<Person> getPeople() {
-		return _people;
-	}
+  Set<Guest> getGuests() {
+    return _guests;
+  }
 
-	void setPeople(List<Person> people) {
-		_people = people;
-	}
+  void setGuests(Set<Guest> guests) {
+    _guests = guests;
+  }
 
   String getTitle() {
-    return '${Datetime.formatDatetime(getDatetime())} [${getCategory().getName()}]';
+    return '${Datetime.formatDatetime(getDatetime())} [${getCategory()}]';
+  }
+
+  static Meeting fromJson(dynamic json) {
+    return Meeting(
+      json['id'],
+      json['link'],
+      json['description'],
+      DateTime.parse(json['datetime']),
+      Project.fromJson(json['project']),
+      json['category'],
+      List<Person>.from(json['guests'].map((model) => Person.fromJson(model['person']))),
+      Set<Guest>.from(json['guests'].map((model) => Guest.fromJson(model))),
+    );
   }
 }

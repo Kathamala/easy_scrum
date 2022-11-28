@@ -2,8 +2,13 @@
 import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/models/company.dart';
 import 'package:easy_scrum/models/info.dart';
+import 'package:easy_scrum/models/person.dart';
+import 'package:easy_scrum/models/product_backlog.dart';
+import 'package:easy_scrum/models/product_owner.dart';
 import 'package:easy_scrum/models/project.dart';
+import 'package:easy_scrum/models/scrum_master.dart';
 import 'package:easy_scrum/pages/meeting/meeting-list.dart';
 import 'package:easy_scrum/pages/activity/project-activity.dart';
 import 'package:easy_scrum/pages/project/project-edit.dart';
@@ -247,7 +252,28 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       fixedSize: Size(270, 20),
                     ),
                     onPressed: () {
-                      _openMeetings(Project(1, 'Easy Scrum'));
+                      _openMeetings(
+                        Project(
+                          1,
+                          'Easy Scrum',
+                          DateTime.now(),
+                          DateTime.now(),
+                          '',
+                          ProductOwner(
+                            1,
+                            Person(1, '', '', '', '', ''),
+                            Company(1, '', ''),
+                          ),
+                          ScrumMaster(
+                            1,
+                            Person(1, '', '', '', '', ''),
+                          ),
+                          ProductBacklog(1, {}),
+                          {},
+                          '',
+                          '',
+                        ),
+                      );
                     },
                     child: Row(children: [
                       Icon(

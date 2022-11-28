@@ -166,8 +166,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   @override
   void initState() {
     super.initState();
-    _person = Person(0, 'Gabi', 'Gabi', 'gabi@gmail.com', '');
-    _usernameController.text = _person.getUsername();
+    _person = Person(0, 'Gabi', 'Gabi', 'gabi@gmail.com', '', '');
+    _usernameController.text = _person.getNickname();
     _emailController.text = _person.getEmail();
   }
 

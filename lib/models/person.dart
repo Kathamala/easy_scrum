@@ -1,16 +1,25 @@
 class Person {
   late int _id;
   late String _name;
-  late String _username;
+  late String _nickname;
   late String _email;
+  late String _password;
   late String _imageUrl;
 
-  Person(int id, String name, String username, String email, String imageUrl) {
-    setId(id);
-    setName(name);
-    setUsername(username);
-    setEmail(email);
-    setImageUrl(imageUrl);
+  Person(
+    int? id,
+    String? name,
+    String? nickname,
+    String? email,
+    String? password,
+    String? imageUrl,
+  ) {
+    setId(id!);
+    setName(name!);
+    setNickname(nickname!);
+    setEmail(email!);
+    setPassword(password!);
+    setImageUrl(imageUrl!);
   }
 
   int getId() {
@@ -29,12 +38,12 @@ class Person {
     _name = name;
   }
 
-  String getUsername() {
-    return _username;
+  String getNickname() {
+    return _nickname;
   }
 
-  void setUsername(String username) {
-    _username = username;
+  void setNickname(String nickname) {
+    _nickname = nickname;
   }
 
   String getEmail() {
@@ -45,11 +54,30 @@ class Person {
     _email = email;
   }
 
+  String getPassword() {
+    return _password;
+  }
+
+  void setPassword(String password) {
+    _password = password;
+  }
+
   String getImageUrl() {
     return _imageUrl;
   }
 
   void setImageUrl(String imageUrl) {
     _imageUrl = imageUrl;
+  }
+
+  static Person fromJson(dynamic json) {
+    return Person(
+      json['id'],
+      json['name'],
+      json['nickname'],
+      json['email'],
+      json['password'],
+      '',
+    );
   }
 }
