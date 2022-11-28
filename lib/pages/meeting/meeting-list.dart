@@ -1,5 +1,4 @@
 // ignore_for_file: file_names
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -103,7 +102,7 @@ class _MeetingListPageState extends State<MeetingListPage> {
           null,
         ),
       ),
-    );
+    ).then((_) => _refresh());
   }
 
   void _openMeetingDetails(Meeting meeting) {
@@ -115,7 +114,7 @@ class _MeetingListPageState extends State<MeetingListPage> {
           meeting,
         ),
       ),
-    );
+    ).then((_) => _refresh());
   }
 
   Widget _getFilter() {

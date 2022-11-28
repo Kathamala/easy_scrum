@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           null,
         ),
       ),
-    );
+    ).then((value) => _findMeetings());
   }
 
   // TO-DO: to integrate

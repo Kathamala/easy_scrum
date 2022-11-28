@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/components/MultiSelectChip.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
@@ -9,6 +10,7 @@ import 'package:easy_scrum/models/item.dart';
 import 'package:easy_scrum/models/meeting.dart';
 import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/service/project.dart';
+import 'package:easy_scrum/service/meeting.dart';
 
 class MeetingPage extends StatefulWidget {
   final Meeting? _meeting;
@@ -44,7 +46,8 @@ class _MeetingPageState extends State<MeetingPage> {
       people.add(Item(project.getScrumMaster().getPerson().getId(), project.getScrumMaster().getPerson().getName()));
       project.getTeams().forEach((item) {
         item.getParticipants().forEach((element) {
-          people.add(Item(element.getDeveloper().getPerson().getId(), element.getDeveloper().getPerson().getName()));
+          people.add(Item(element.getDeveloper().getPerson().getId(),
+              element.getDeveloper().getPerson().getName()));
         });
       });
       setState(() {
@@ -82,6 +85,81 @@ class _MeetingPageState extends State<MeetingPage> {
     }
   }
 
+  Object _getGuest(Item item) {
+    Object data = {};
+    widget._meeting!.getGuests().forEach((element) {
+      if (element.getPerson().getId() == item.getId()) {
+        data = {
+          'id': element.getId()
+        };
+      }
+    });
+    if (data == {}) {
+      data = {
+        'person': {'id': item.getId()},
+        'category': 'DEFAULT'
+      };
+    }
+    return data;
+  }
+
+  Future<void> _submit() async {
+    Map<String, Object?> data;
+    List<String> datetime = _datetimeController.text.split(' ');
+    List<String> date = datetime[0].split('/');
+    List<String> time = datetime[1].split(':');
+    data = {
+      'link': _linkController.text,
+      'datetime': '${date[2]}-${date[1]}-${date[0]}T${time[0]}:${time[1]}:${time[2]}',
+      'category': _categoryController,
+      'project': {
+        'id': _projectController!.getId()
+      },
+      'description': _descriptionController.text
+    };
+    http.Response response;
+    if (widget._meeting == null) {
+      data['guests'] = List<Object>.from(
+        _chosenPeople.map(
+          (element) => {
+            'person': {
+              'id': element.getId()
+            },
+            'category': 'DEFAULT'
+          },
+        ),
+      );
+      response = await http.post(
+        MeetingService.postMeeting(),
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+    } else {
+      data['id'] = widget._meeting!.getId();
+      data['guests'] = List<Object>.from(
+        _chosenPeople.map(
+          (element) => _getGuest(element),
+        ),
+      );
+      response = await http.put(
+        MeetingService.putMeeting(widget._meeting!.getId()),
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+    }
+    if (response.statusCode == 200) {
+      Navigator.of(context).pop();
+    } else {
+      /** Error */
+    }
+  }
+
   String _getTitle() {
     if (widget._meeting == null) {
       return 'Cadastrar Reunião';
@@ -99,7 +177,7 @@ class _MeetingPageState extends State<MeetingPage> {
   void _setInfo() {
     setState(() {
       _linkController.text = widget._meeting!.getLink();
-      _datetimeController.text = widget._meeting!.getDatetime().toString();
+      _datetimeController.text = widget._meeting!.getDatetime().toString().split('.')[0];
       for (var element in _projects) {
         if (element.getId() == widget._meeting!.getProject().getId()) {
           _projectController = element;
@@ -116,11 +194,6 @@ class _MeetingPageState extends State<MeetingPage> {
           .toList();
       _descriptionController.text = widget._meeting!.getDescription();
     });
-  }
-
-  // TO-DO: to integrate
-  void _submit() {
-    Navigator.of(context).pop();
   }
 
   Widget _getLinkField() {
@@ -150,6 +223,7 @@ class _MeetingPageState extends State<MeetingPage> {
   }
 
   Widget _getDatetimeField() {
+    var maskFormatter = MaskTextInputFormatter(mask: '##/##/#### ##:##:##', filter: { "#": RegExp(r'[0-9]') });
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Data e Hora *',
@@ -165,12 +239,16 @@ class _MeetingPageState extends State<MeetingPage> {
       ),
       keyboardType: TextInputType.datetime,
       controller: _datetimeController,
+      inputFormatters: [maskFormatter],
       validator: (value) {
         if (value!.isEmpty) {
           return 'Insira a data e hora da reunião!';
         } else {
-          return null;
+          if (value.length != 19) {
+            return 'Complete a data e hora da reunião!';
+          }
         }
+        return null;
       },
     );
   }
@@ -315,7 +393,7 @@ class _MeetingPageState extends State<MeetingPage> {
             maxSelection: _people.length,
             onSelectionChanged: (list) {
               setState(() {
-                _chosenPeople = list;
+                _chosenPeople = [...list];
               });
             },
           ),
@@ -343,7 +421,7 @@ class _MeetingPageState extends State<MeetingPage> {
   @override
   void initState() {
     super.initState();
-  
+
     _findProjects(10, 0);
 
     _categories.add('DEFAULT');
@@ -354,7 +432,7 @@ class _MeetingPageState extends State<MeetingPage> {
     _categories.add('PRODUCT_BACKLOG_REFINEMENT');
 
     _categoryController = _categories.first;
-  
+
     if (widget._meeting == null) {
     } else {
       _setInfo();

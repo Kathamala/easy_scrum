@@ -1,3 +1,4 @@
+import 'package:easy_scrum/models/guest.dart';
 import 'package:easy_scrum/models/person.dart';
 import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/utils/date.dart';
@@ -10,6 +11,7 @@ class Meeting {
   late Project _project;
   late String _category;
   late List<Person> _people;
+  late Set<Guest> _guests;
 
   Meeting(
     int? id,
@@ -19,6 +21,7 @@ class Meeting {
     Project? project,
     String? category,
     List<Person>? people,
+    Set<Guest>? guests
   ) {
     setId(id!);
     setLink(link!);
@@ -27,6 +30,7 @@ class Meeting {
     setProject(project!);
     setCategory(category!);
     setPeople(people!);
+    setGuests(guests!);
   }
 
   int getId() {
@@ -85,6 +89,14 @@ class Meeting {
     _people = people;
   }
 
+  Set<Guest> getGuests() {
+    return _guests;
+  }
+
+  void setGuests(Set<Guest> guests) {
+    _guests = guests;
+  }
+
   String getTitle() {
     return '${Datetime.formatDatetime(getDatetime())} [${getCategory()}]';
   }
@@ -98,6 +110,7 @@ class Meeting {
       Project.fromJson(json['project']),
       json['category'],
       List<Person>.from(json['guests'].map((model) => Person.fromJson(model['person']))),
+      Set<Guest>.from(json['guests'].map((model) => Guest.fromJson(model))),
     );
   }
 }

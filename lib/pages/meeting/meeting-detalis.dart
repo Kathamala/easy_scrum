@@ -1,5 +1,5 @@
 // ignore_for_file: file_names
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -12,10 +12,11 @@ import 'package:easy_scrum/pages/meeting/meeting.dart';
 import 'package:easy_scrum/service/meeting.dart';
 import 'package:easy_scrum/utils/date.dart';
 
+// ignore: must_be_immutable
 class MeetingDetailsPage extends StatefulWidget {
-  final Meeting _meeting;
+  Meeting _meeting;
 
-  const MeetingDetailsPage(Key key, this._meeting) : super(key: key);
+  MeetingDetailsPage(Key key, this._meeting) : super(key: key);
 
   @override
   State<MeetingDetailsPage> createState() => _MeetingDetailsPageState();
@@ -34,6 +35,15 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
     if (response.statusCode == 200) {
       Navigator.of(context).pop();
       Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> _refresh() async {
+    var response = await http.get(MeetingService.getMeeting(widget._meeting.getId()));
+    if (response.statusCode == 200) {
+      setState(() {
+        widget._meeting = Meeting.fromJson(json.decode(response.body));
+      });
     }
   }
 
@@ -86,7 +96,7 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
                 widget._meeting,
               ),
             ),
-          );
+          ).then((_) => _refresh());
         },
       ),
       IconButton(

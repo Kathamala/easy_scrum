@@ -5,7 +5,7 @@ import 'package:easy_scrum/models/item.dart';
 
 class MultiSelectChip extends StatefulWidget {
   final List<Item> _list;
-  final List<Item> _selectedChoices;
+  final List<Item> _selectedChoicesDefault;
 
   final int? maxSelection;
   final Function(List<Item>)? onSelectionChanged;
@@ -13,7 +13,7 @@ class MultiSelectChip extends StatefulWidget {
 
   const MultiSelectChip(
     this._list,
-    this._selectedChoices, {
+    this._selectedChoicesDefault, {
     Key? key,
     this.maxSelection,
     this.onSelectionChanged,
@@ -25,9 +25,11 @@ class MultiSelectChip extends StatefulWidget {
 }
 
 class _MultiSelectChipState extends State<MultiSelectChip> {
+  late List<Item> _selectedChoices;
+
   bool _check(Item item) {
     bool isPresent = false;
-    for (var element in widget._selectedChoices) {
+    for (var element in _selectedChoices) {
       if (element.getId() == item.getId()) {
         isPresent = true;
       }
@@ -44,15 +46,15 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
           label: Text(item.getName()),
           selected: _check(item),
           onSelected: (selected) {
-            if (widget._selectedChoices.length == (widget.maxSelection ?? -1) &&
+            if (_selectedChoices.length == (widget.maxSelection ?? -1) &&
                 !_check(item)) {
-              widget.onMaxSelected?.call(widget._selectedChoices);
+              widget.onMaxSelected?.call(_selectedChoices);
             } else {
               setState(() {
-                widget._selectedChoices.contains(item)
-                    ? widget._selectedChoices.remove(item)
-                    : widget._selectedChoices.add(item);
-                widget.onSelectionChanged?.call(widget._selectedChoices);
+                _check(item)
+                    ? _selectedChoices.removeWhere((element) => element.getId() == item.getId())
+                    : _selectedChoices.add(item);
+                widget.onSelectionChanged?.call(_selectedChoices);
               });
             }
           },
@@ -61,6 +63,12 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
     }
 
     return choices;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedChoices = [...widget._selectedChoicesDefault];
   }
 
   @override

@@ -31,6 +31,18 @@ class MeetingService {
     });
   }
 
+  static Uri getMeeting(int meetingId) {
+    return Uri.http(ApiService.getEndpoint(), '$_controller/$meetingId');
+  }
+
+  static Uri postMeeting() {
+    return Uri.http(ApiService.getEndpoint(), _controller);
+  }
+
+  static Uri putMeeting(int meetingId) {
+    return Uri.http(ApiService.getEndpoint(), '$_controller/$meetingId');
+  }
+
   static Uri deleteMeeting(int meetingId) {
     return Uri.http(ApiService.getEndpoint(), '$_controller/$meetingId');
   }
