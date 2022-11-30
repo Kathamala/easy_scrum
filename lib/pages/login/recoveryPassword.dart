@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:easy_scrum/design/colors.dart';
+import 'package:easy_scrum/service/people.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class RecoveryPasswordPage extends StatefulWidget {
   const RecoveryPasswordPage({Key? key}) : super(key: key);
@@ -23,28 +26,178 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
 
   bool codePrompt = false;
 
-  void sendCode() async {
+  Future<bool> sendCode() async {
     Random random = Random();
-    int _randomNumber1 = random.nextInt(9);
-    int _randomNumber2 = random.nextInt(9);
-    int _randomNumber3 = random.nextInt(9);
-    int _randomNumber4 = random.nextInt(9);
+    int _randomNumber1 = random.nextInt(8) + 1;
+    int _randomNumber2 = random.nextInt(8) + 1;
+    int _randomNumber3 = random.nextInt(8) + 1;
+    int _randomNumber4 = random.nextInt(8) + 1;
 
     code = (_randomNumber1 * 1000) +
         (_randomNumber2 * 100) +
         (_randomNumber3 * 10) +
         _randomNumber4;
 
-    //send to email
-    print("Code sent!");
+    var response = await http
+        .post(PeopleService.sendCode(emailController.text, code.toString()));
+
+    if (response.statusCode == 200) {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              height: MediaQuery.of(context).size.height / 2,
+              color: Colors.white,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 40, left: 20, right: 20),
+                        child: Text(
+                          "Code: " + code.toString(),
+                          style: TextStyle(
+                              color: AppColors.primaryPurple,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.email_outlined,
+                      color: AppColors.success,
+                      size: 90,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 60),
+                      child: ElevatedButton(
+                          child: const Text('OK',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryPurple,
+                              fixedSize: Size(250, 60),
+                              shape: StadiumBorder()),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
+      return true;
+    } else {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              height: MediaQuery.of(context).size.height / 2,
+              color: Colors.white,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 40, left: 20, right: 20),
+                        child: Text(
+                          json.decode(response.body)["message"],
+                          style: TextStyle(
+                              color: AppColors.primaryPurple,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.error_outline,
+                      color: AppColors.error,
+                      size: 90,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 60),
+                      child: ElevatedButton(
+                          child: const Text('OK',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryPurple,
+                              fixedSize: Size(250, 60),
+                              shape: StadiumBorder()),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
+      return false;
+    }
   }
 
-  void validateCode() {
-    print("Code validated!");
-  }
+  Future<bool> changePassword() async {
+    var response = await http.post(PeopleService.passwordChange(
+        emailController.text, passwordController.text));
 
-  void changePassword() {
-    print("Password changed!");
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              height: MediaQuery.of(context).size.height / 2,
+              color: Colors.white,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 40, left: 20, right: 20),
+                        child: Text(
+                          json.decode(response.body)["message"],
+                          style: TextStyle(
+                              color: AppColors.primaryPurple,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.error_outline,
+                      color: AppColors.error,
+                      size: 90,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 60),
+                      child: ElevatedButton(
+                          child: const Text('OK',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryPurple,
+                              fixedSize: Size(250, 60),
+                              shape: StadiumBorder()),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
+      return false;
+    }
   }
 
   @override
@@ -223,80 +376,82 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 15.0),
                       child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               switch (recoveryState) {
                                 case 0:
                                   sendCode();
                                   break;
-                                case 1:
-                                  validateCode();
-                                  break;
                                 case 2:
-                                  changePassword();
+                                  bool result = await changePassword();
 
-                                  showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              2,
-                                          color: Colors.white,
-                                          child: Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 40),
-                                                  child: Text(
-                                                    'Senha alterada com sucesso!',
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .primaryPurple,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                  if (result) {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2,
+                                            color: Colors.white,
+                                            child: Center(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 40),
+                                                    child: Text(
+                                                      'Senha alterada com sucesso!',
+                                                      style: TextStyle(
+                                                          color: AppColors
+                                                              .primaryPurple,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
                                                   ),
-                                                ),
-                                                Icon(
-                                                  Icons.task_alt,
-                                                  color: AppColors.success,
-                                                  size: 90,
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 60),
-                                                  child: ElevatedButton(
-                                                      child: const Text('Login',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20)),
-                                                      style: ElevatedButton.styleFrom(
-                                                          backgroundColor:
-                                                              AppColors
-                                                                  .primaryPurple,
-                                                          fixedSize:
-                                                              Size(250, 60),
-                                                          shape:
-                                                              StadiumBorder()),
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                      }),
-                                                ),
-                                              ],
+                                                  Icon(
+                                                    Icons.task_alt,
+                                                    color: AppColors.success,
+                                                    size: 90,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 60),
+                                                    child: ElevatedButton(
+                                                        child: const Text(
+                                                            'Login',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 20)),
+                                                        style: ElevatedButton.styleFrom(
+                                                            backgroundColor:
+                                                                AppColors
+                                                                    .primaryPurple,
+                                                            fixedSize:
+                                                                Size(250, 60),
+                                                            shape:
+                                                                StadiumBorder()),
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          Navigator.pop(
+                                                              context);
+                                                        }),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      });
+                                          );
+                                        });
+                                  }
                                   break;
                               }
 

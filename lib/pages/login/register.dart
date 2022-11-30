@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'dart:convert';
+
 import 'package:easy_scrum/design/colors.dart';
-//import 'package:easy_scrum/pages/home.dart';
-//import 'package:easy_scrum/pages/login/login.dart';
+import 'package:easy_scrum/models/person.dart';
+import 'package:easy_scrum/pages/home.dart';
+import 'package:easy_scrum/service/people.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -19,11 +23,64 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void register() {
-    print("Registered!");
-    print(usernameController.text);
-    print(emailController.text);
-    print(passwordController.text);
+  Future<bool> register() async {
+    var response = await http.post(PeopleService.register(
+        usernameController.text,
+        passwordController.text,
+        emailController.text));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              height: MediaQuery.of(context).size.height / 2,
+              color: Colors.white,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 40, left: 20, right: 20),
+                        child: Text(
+                          json.decode(response.body)["message"],
+                          style: TextStyle(
+                              color: AppColors.primaryPurple,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.error_outline,
+                      color: AppColors.error,
+                      size: 90,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 60),
+                      child: ElevatedButton(
+                          child: const Text('OK',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryPurple,
+                              fixedSize: Size(250, 60),
+                              shape: StadiumBorder()),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
+      return false;
+    }
   }
 
   @override
@@ -169,61 +226,69 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 20,
                     ),
                     ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            register();
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    height:
-                                        MediaQuery.of(context).size.height / 2,
-                                    color: Colors.white,
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 40),
-                                            child: Text(
-                                              'Cadastro realizado com sucesso!',
-                                              style: TextStyle(
-                                                  color:
-                                                      AppColors.primaryPurple,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Icon(
-                                            Icons.task_alt,
-                                            color: AppColors.success,
-                                            size: 90,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 60),
-                                            child: ElevatedButton(
-                                                child: const Text('Login',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20)),
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
+                            bool success = await register();
+                            if (success) {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              2,
+                                      color: Colors.white,
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 40),
+                                              child: Text(
+                                                'Cadastro realizado com sucesso!',
+                                                style: TextStyle(
+                                                    color:
                                                         AppColors.primaryPurple,
-                                                    fixedSize: Size(250, 60),
-                                                    shape: StadiumBorder()),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                  Navigator.pop(context);
-                                                }),
-                                          ),
-                                        ],
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.task_alt,
+                                              color: AppColors.success,
+                                              size: 90,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 60),
+                                              child: ElevatedButton(
+                                                  child: const Text('Login',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20)),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              AppColors
+                                                                  .primaryPurple,
+                                                          fixedSize:
+                                                              Size(250, 60),
+                                                          shape:
+                                                              StadiumBorder()),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                  }),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                });
+                                    );
+                                  });
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
