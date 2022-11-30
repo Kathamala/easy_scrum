@@ -1,6 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'dart:convert';
+
+import 'package:easy_scrum/service/people.dart';
+import 'package:http/http.dart' as http;
 import 'package:easy_scrum/design/colors.dart';
+import 'package:easy_scrum/models/person.dart';
 import 'package:easy_scrum/pages/home.dart';
 import 'package:easy_scrum/pages/login/recoveryPassword.dart';
 import 'package:easy_scrum/pages/login/register.dart';
@@ -19,10 +24,60 @@ class _LoginPageState extends State<LoginPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void login() {
-    print("Log in!");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
+  Future<void> login() async {
+    var response = await http.get(PeopleService.login(
+        usernameController.text, passwordController.text, 1, 0));
+
+    if (response.statusCode == 200) {
+      Person p = Person.fromJson(json.decode(response.body));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => HomePage(loggedUser: p)));
+    } else {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              height: MediaQuery.of(context).size.height / 2,
+              color: Colors.white,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: Text(
+                        json.decode(response.body)["message"],
+                        style: TextStyle(
+                            color: AppColors.primaryPurple,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Icon(
+                      Icons.error_outline,
+                      color: AppColors.error,
+                      size: 90,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 60),
+                      child: ElevatedButton(
+                          child: const Text('OK',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryPurple,
+                              fixedSize: Size(250, 60),
+                              shape: StadiumBorder()),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
+    }
   }
 
   @override

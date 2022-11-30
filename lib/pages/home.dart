@@ -17,7 +17,8 @@ import 'package:easy_scrum/service/meeting.dart';
 import 'package:easy_scrum/utils/date.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final Person? loggedUser;
+  const HomePage({Key? key, this.loggedUser}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -257,6 +258,7 @@ class _HomePageState extends State<HomePage> {
     );
 
     _findMeetings();
+    print(widget.loggedUser!.getName());
   }
 
   @override
