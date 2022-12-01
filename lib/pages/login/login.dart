@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 80),
               Container(
-                height: size.height / 2,
+                height: 500,
                 padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -131,6 +131,10 @@ class _LoginPageState extends State<LoginPage> {
                             children: <Widget>[
                               TextFormField(
                                 decoration: const InputDecoration(
+                                  errorStyle: TextStyle(
+                                    fontSize: 10.0,
+                                  ),
+                                  errorMaxLines: 1,
                                   labelText: "Usuário",
                                   labelStyle: TextStyle(
                                       color: Colors.black, fontSize: 10),
@@ -147,10 +151,14 @@ class _LoginPageState extends State<LoginPage> {
                                   }
                                 },
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: 10),
                               TextFormField(
                                 obscureText: true,
                                 decoration: const InputDecoration(
+                                  errorStyle: TextStyle(
+                                    fontSize: 10.0,
+                                  ),
+                                  errorMaxLines: 1,
                                   labelText: "Senha",
                                   labelStyle: TextStyle(
                                       color: Colors.black, fontSize: 10),
@@ -186,25 +194,22 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            login();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryPurple,
-                            fixedSize: Size(250, 60),
-                            shape: StadiumBorder()),
-                        child: const Text(
-                          "Entrar",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )),
-                    SizedBox(
-                      height: 10,
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              login();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryPurple,
+                              fixedSize: Size(250, 60),
+                              shape: StadiumBorder()),
+                          child: const Text(
+                            "Entrar",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
