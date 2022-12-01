@@ -115,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(height: 80),
               Container(
-                height: size.height / 1.8,
+                height: 500,
                 padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -134,8 +134,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             children: <Widget>[
                               TextFormField(
                                 decoration: const InputDecoration(
+                                  errorStyle: TextStyle(
+                                    fontSize: 10.0,
+                                  ),
+                                  errorMaxLines: 1,
                                   labelText: "Usuário",
-                                  errorMaxLines: 2,
                                   labelStyle: TextStyle(
                                       color: Colors.black, fontSize: 10),
                                 ),
@@ -153,9 +156,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                   }
                                 },
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: 10),
                               TextFormField(
                                 decoration: const InputDecoration(
+                                  errorStyle: TextStyle(
+                                    fontSize: 10.0,
+                                  ),
+                                  errorMaxLines: 1,
                                   labelText: "Email",
                                   labelStyle: TextStyle(
                                       color: Colors.black, fontSize: 10),
@@ -176,12 +183,15 @@ class _RegisterPageState extends State<RegisterPage> {
                                   }
                                 },
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: 10),
                               TextFormField(
                                 obscureText: true,
                                 decoration: const InputDecoration(
+                                  errorStyle: TextStyle(
+                                    fontSize: 10.0,
+                                  ),
+                                  errorMaxLines: 1,
                                   labelText: "Senha",
-                                  errorMaxLines: 2,
                                   labelStyle: TextStyle(
                                       color: Colors.black, fontSize: 10),
                                 ),
@@ -199,12 +209,15 @@ class _RegisterPageState extends State<RegisterPage> {
                                   }
                                 },
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: 10),
                               TextFormField(
                                 obscureText: true,
                                 decoration: const InputDecoration(
+                                  errorStyle: TextStyle(
+                                    fontSize: 10.0,
+                                  ),
+                                  errorMaxLines: 1,
                                   labelText: "Confirmar Senha",
-                                  errorMaxLines: 2,
                                   labelStyle: TextStyle(
                                       color: Colors.black, fontSize: 10),
                                 ),
@@ -222,83 +235,81 @@ class _RegisterPageState extends State<RegisterPage> {
                                 },
                               ),
                             ])),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            bool success = await register();
-                            if (success) {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              2,
-                                      color: Colors.white,
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 40),
-                                              child: Text(
-                                                'Cadastro realizado com sucesso!',
-                                                style: TextStyle(
-                                                    color:
-                                                        AppColors.primaryPurple,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              bool success = await register();
+                              if (success) {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                2,
+                                        color: Colors.white,
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 40),
+                                                child: Text(
+                                                  'Cadastro realizado com sucesso!',
+                                                  style: TextStyle(
+                                                      color: AppColors
+                                                          .primaryPurple,
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Icon(
-                                              Icons.task_alt,
-                                              color: AppColors.success,
-                                              size: 90,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 60),
-                                              child: ElevatedButton(
-                                                  child: const Text('Login',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20)),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          backgroundColor:
-                                                              AppColors
-                                                                  .primaryPurple,
-                                                          fixedSize:
-                                                              Size(250, 60),
-                                                          shape:
-                                                              StadiumBorder()),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                    Navigator.pop(context);
-                                                  }),
-                                            ),
-                                          ],
+                                              Icon(
+                                                Icons.task_alt,
+                                                color: AppColors.success,
+                                                size: 90,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 60),
+                                                child: ElevatedButton(
+                                                    child: const Text('Login',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20)),
+                                                    style: ElevatedButton.styleFrom(
+                                                        backgroundColor:
+                                                            AppColors
+                                                                .primaryPurple,
+                                                        fixedSize:
+                                                            Size(250, 60),
+                                                        shape: StadiumBorder()),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    }),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  });
+                                      );
+                                    });
+                              }
                             }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryPurple,
-                            fixedSize: Size(250, 60),
-                            shape: StadiumBorder()),
-                        child: const Text(
-                          "Cadastrar",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )),
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryPurple,
+                              fixedSize: Size(250, 60),
+                              shape: StadiumBorder()),
+                          child: const Text(
+                            "Cadastrar",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )),
+                    ),
                   ],
                 ),
                 decoration: BoxDecoration(
