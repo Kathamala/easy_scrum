@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_scrum/service/meeting.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/components/Error.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/design/colors.dart';
+import 'package:easy_scrum/helpers/person.dart';
 import 'package:easy_scrum/models/meeting.dart';
 import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/pages/meeting/meeting.dart';
@@ -21,6 +23,8 @@ class MeetingListPage extends StatefulWidget {
 }
 
 class _MeetingListPageState extends State<MeetingListPage> {
+  final PersonHelper _helper = PersonHelper();
+
   List<Meeting> _allMeetings = [];
   List<Meeting> _meetings = [];
 
@@ -33,19 +37,20 @@ class _MeetingListPageState extends State<MeetingListPage> {
   Future<void> _findAll(int limit, int page) async {
     Uri uri;
     if (widget._project == null) {
-      uri = MeetingService.getMeetingsByPerson(1, limit, page);
+      uri = MeetingService.getMeetingsByPerson(await _helper.getPerson(), limit, page);
     } else {
-      uri = MeetingService.getMeetingsByProjetc(1, widget._project!.getId(), limit, page);
+      uri = MeetingService.getMeetingsByProjetc(await _helper.getPerson(), widget._project!.getId(), limit, page);
     }
     var response = await http.get(uri);
     if (response.statusCode == 200) {
       Iterable list = json.decode(response.body);
       setState(() {
-        _allMeetings = List<Meeting>.from(list.map((model) => Meeting.fromJson(model)));
+        _allMeetings =
+            List<Meeting>.from(list.map((model) => Meeting.fromJson(model)));
         _meetings = [..._allMeetings];
       });
     } else {
-      /** Error */
+      ErrorHandling.getModalBottomSheet(context, response);
     }
   }
 
@@ -80,7 +85,7 @@ class _MeetingListPageState extends State<MeetingListPage> {
           _lastRemovedPos = -1;
         });
       } else {
-        /** Error */
+        ErrorHandling.getModalBottomSheet(context, response);
       }
     }
   }

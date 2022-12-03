@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/components/Error.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/models/info.dart';
@@ -35,6 +36,8 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
     if (response.statusCode == 200) {
       Navigator.of(context).pop();
       Navigator.of(context).pop();
+    } else {
+      ErrorHandling.getModalBottomSheet(context, response);
     }
   }
 
@@ -44,6 +47,8 @@ class _MeetingDetailsPageState extends State<MeetingDetailsPage> {
       setState(() {
         widget._meeting = Meeting.fromJson(json.decode(response.body));
       });
+    } else {
+      ErrorHandling.getModalBottomSheet(context, response);
     }
   }
 

@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/components/Error.dart';
 import 'package:easy_scrum/components/MultiSelectChip.dart';
 import 'package:easy_scrum/components/TopAppBar.dart';
 import 'package:easy_scrum/design/colors.dart';
+import 'package:easy_scrum/helpers/person.dart';
 import 'package:easy_scrum/models/item.dart';
 import 'package:easy_scrum/models/meeting.dart';
 import 'package:easy_scrum/models/project.dart';
-import 'package:easy_scrum/service/project.dart';
 import 'package:easy_scrum/service/meeting.dart';
+import 'package:easy_scrum/service/project.dart';
 
 class MeetingPage extends StatefulWidget {
   final Meeting? _meeting;
@@ -22,6 +24,7 @@ class MeetingPage extends StatefulWidget {
 }
 
 class _MeetingPageState extends State<MeetingPage> {
+  final PersonHelper _helper = PersonHelper();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<Project> _projects = [];
@@ -63,12 +66,12 @@ class _MeetingPageState extends State<MeetingPage> {
         });
       }
     } else {
-      /** Error */
+      ErrorHandling.getModalBottomSheet(context, response);
     }
   }
 
   Future<void> _findProjects(int limit, int page) async {
-    var response = await http.get(ProjectService.getProjectsByPerson(1, limit, page));
+    var response = await http.get(ProjectService.getProjectsByPerson(await _helper.getPerson(), limit, page));
     if (response.statusCode == 200) {
       Iterable list = json.decode(response.body);
       setState(() {
@@ -81,7 +84,7 @@ class _MeetingPageState extends State<MeetingPage> {
         }
       });
     } else {
-      /** Error */
+      ErrorHandling.getModalBottomSheet(context, response);
     }
   }
 
@@ -156,7 +159,7 @@ class _MeetingPageState extends State<MeetingPage> {
     if (response.statusCode == 200) {
       Navigator.of(context).pop();
     } else {
-      /** Error */
+      ErrorHandling.getModalBottomSheet(context, response);
     }
   }
 

@@ -3,14 +3,16 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/components/Error.dart';
 import 'package:easy_scrum/design/colors.dart';
-import 'package:easy_scrum/models/meeting.dart';
-import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/models/company.dart';
+import 'package:easy_scrum/models/meeting.dart';
 import 'package:easy_scrum/models/person.dart';
 import 'package:easy_scrum/models/product_backlog.dart';
 import 'package:easy_scrum/models/product_owner.dart';
+import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/models/scrum_master.dart';
+import 'package:easy_scrum/helpers/person.dart';
 import 'package:easy_scrum/pages/meeting/meeting-list.dart';
 import 'package:easy_scrum/pages/project/project-details.dart';
 import 'package:easy_scrum/service/meeting.dart';
@@ -25,11 +27,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final PersonHelper _helper = PersonHelper();
   final List<Project> _projects = [];
   List<Meeting> _meetings = [];
 
   Future<void> _findMeetings() async {
-    var response = await http.get(MeetingService.getMeetingsToday(1));
+    var response = await http.get(MeetingService.getMeetingsToday(await _helper.getPerson()));
     if (response.statusCode == 200) {
       Iterable list = json.decode(response.body);
       setState(() {
@@ -37,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             List<Meeting>.from(list.map((model) => Meeting.fromJson(model)));
       });
     } else {
-      /** Error */
+      ErrorHandling.getModalBottomSheet(context, response);
     }
   }
 
@@ -60,6 +63,7 @@ class _HomePageState extends State<HomePage> {
 
   // TO-DO: to integrate
   Future<void> _logout() async {
+    _helper.deletePerson(widget.loggedUser!.getId());
     Navigator.of(context).pop();
   }
 
@@ -258,7 +262,6 @@ class _HomePageState extends State<HomePage> {
     );
 
     _findMeetings();
-    print(widget.loggedUser!.getName());
   }
 
   @override
