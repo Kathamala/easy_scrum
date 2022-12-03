@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:easy_scrum/helpers/person.dart';
 import 'package:easy_scrum/service/people.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_scrum/design/colors.dart';
@@ -19,6 +20,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  PersonHelper helper = PersonHelper();
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -30,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.statusCode == 200) {
       Person p = Person.fromJson(json.decode(response.body));
+      helper.savePerson(p);
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => HomePage(loggedUser: p)));
     } else {
