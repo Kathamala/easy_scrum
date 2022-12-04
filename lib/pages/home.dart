@@ -5,17 +5,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/components/Error.dart';
 import 'package:easy_scrum/design/colors.dart';
-import 'package:easy_scrum/models/company.dart';
 import 'package:easy_scrum/models/meeting.dart';
 import 'package:easy_scrum/models/person.dart';
-import 'package:easy_scrum/models/product_backlog.dart';
-import 'package:easy_scrum/models/product_owner.dart';
 import 'package:easy_scrum/models/project.dart';
-import 'package:easy_scrum/models/scrum_master.dart';
 import 'package:easy_scrum/helpers/person.dart';
 import 'package:easy_scrum/pages/meeting/meeting-list.dart';
 import 'package:easy_scrum/pages/project/project-details.dart';
 import 'package:easy_scrum/service/meeting.dart';
+import 'package:easy_scrum/service/project.dart';
 import 'package:easy_scrum/utils/date.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,8 +25,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final PersonHelper _helper = PersonHelper();
-  final List<Project> _projects = [];
+  List<Project> _projects = [];
   List<Meeting> _meetings = [];
+
+  Future<void> _findProjects() async {
+    var response = await http.get(ProjectService.getProjectsByPerson(await _helper.getPerson(), 10, 0));
+    if (response.statusCode == 200) {
+      Iterable list = json.decode(response.body);
+      setState(() {
+        _projects =
+            List<Project>.from(list.map((model) => Project.fromJson(model)));
+      });
+    } else {
+      ErrorHandling.getModalBottomSheet(context, response);
+    }
+  }
 
   Future<void> _findMeetings() async {
     var response = await http.get(MeetingService.getMeetingsToday(await _helper.getPerson()));
@@ -44,9 +54,18 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _reflesh() async {
+    await _findProjects();
+    await _findMeetings();
+  }
+
   void _openProject(Project project) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const ProjectDetailsPage()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ProjectDetailsPage(),
+      ),
+    ).then((value) => _reflesh());
   }
 
   void _openMeetings() {
@@ -58,7 +77,7 @@ class _HomePageState extends State<HomePage> {
           null,
         ),
       ),
-    ).then((value) => _findMeetings());
+    ).then((value) => _reflesh());
   }
 
   // TO-DO: to integrate
@@ -238,30 +257,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _projects.add(
-      Project(
-        1,
-        'Easy Scrum',
-        DateTime.now(),
-        DateTime.now(),
-        '',
-        ProductOwner(
-          1,
-          Person(1, '', '', '', '', ''),
-          Company(1, '', ''),
-        ),
-        ScrumMaster(
-          1,
-          Person(1, '', '', '', '', ''),
-        ),
-        ProductBacklog(1, {}),
-        {},
-        '',
-        '',
-      ),
-    );
-
-    _findMeetings();
+    _reflesh();
   }
 
   @override
