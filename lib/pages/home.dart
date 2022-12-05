@@ -29,7 +29,8 @@ class _HomePageState extends State<HomePage> {
   List<Meeting> _meetings = [];
 
   Future<void> _findProjects() async {
-    var response = await http.get(ProjectService.getProjectsByPerson(await _helper.getPerson(), 10, 0));
+    var response = await http.get(
+        ProjectService.getProjectsByPerson(await _helper.getPerson(), 10, 0));
     if (response.statusCode == 200) {
       Iterable list = json.decode(response.body);
       setState(() {
@@ -42,7 +43,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _findMeetings() async {
-    var response = await http.get(MeetingService.getMeetingsToday(await _helper.getPerson()));
+    var response = await http
+        .get(MeetingService.getMeetingsToday(await _helper.getPerson()));
     if (response.statusCode == 200) {
       Iterable list = json.decode(response.body);
       setState(() {
@@ -63,7 +65,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const ProjectDetailsPage(),
+        builder: (context) => ProjectDetailsPage(currentProject: project),
       ),
     ).then((value) => _reflesh());
   }
@@ -277,8 +279,12 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         actions: _getActions(),
       ),
-      bottomNavigationBar: const BottomAppBarEasyScrum(
+      bottomNavigationBar: BottomAppBarEasyScrum(
         currentScreen: "home",
+        reflesh: (_) {
+          print('Aqqq');
+          _reflesh();
+        },
       ),
       body: SingleChildScrollView(
         child: Container(

@@ -9,7 +9,7 @@ class Project {
   late DateTime _startDate;
   late DateTime _deadline;
   late String _status;
-  late ProductOwner _productOwner;
+  late String _productOwner;
   late ScrumMaster _scrumMaster;
   late ProductBacklog _productBacklog;
   late Set<DevTeam> _teams;
@@ -22,7 +22,7 @@ class Project {
       DateTime? startDate,
       DateTime? deadline,
       String? status,
-      ProductOwner? productOwner,
+      String? productOwner,
       ScrumMaster? scrumMaster,
       ProductBacklog? productBacklog,
       Set<DevTeam>? teams,
@@ -81,11 +81,11 @@ class Project {
     _status = status;
   }
 
-  ProductOwner getProductOwner() {
+  String getProductOwner() {
     return _productOwner;
   }
 
-  void setProductOwner(ProductOwner productOwner) {
+  void setProductOwner(String productOwner) {
     _productOwner = productOwner;
   }
 
@@ -136,7 +136,7 @@ class Project {
       DateTime.parse(json['startDate']),
       DateTime.parse(json['deadline']),
       json['status'],
-      ProductOwner.fromJson(json['productOwner']),
+      json['productOwner'],
       ScrumMaster.fromJson(json['scrumMaster']),
       ProductBacklog.fromJson(json['productBacklog']),
       Set<DevTeam>.from(json['teams'].map((model) => DevTeam.fromJson(model))),

@@ -41,12 +41,13 @@ class _MeetingPageState extends State<MeetingPage> {
   String? _categoryController;
 
   Future<void> _findProject() async {
-    var response = await http.get(ProjectService.getProject(_projectController!.getId()));
+    var response =
+        await http.get(ProjectService.getProject(_projectController!.getId()));
     if (response.statusCode == 200) {
       Project project = Project.fromJson(json.decode(response.body));
       List<Item> people = [];
-      people.add(Item(project.getProductOwner().getPerson().getId(), project.getProductOwner().getPerson().getName()));
-      people.add(Item(project.getScrumMaster().getPerson().getId(), project.getScrumMaster().getPerson().getName()));
+      people.add(Item(project.getScrumMaster().getPerson().getId(),
+          project.getScrumMaster().getPerson().getName()));
       project.getTeams().forEach((item) {
         item.getParticipants().forEach((element) {
           people.add(Item(element.getDeveloper().getPerson().getId(),
@@ -71,7 +72,8 @@ class _MeetingPageState extends State<MeetingPage> {
   }
 
   Future<void> _findProjects(int limit, int page) async {
-    var response = await http.get(ProjectService.getProjectsByPerson(await _helper.getPerson(), limit, page));
+    var response = await http.get(ProjectService.getProjectsByPerson(
+        await _helper.getPerson(), limit, page));
     if (response.statusCode == 200) {
       Iterable list = json.decode(response.body);
       setState(() {
@@ -92,9 +94,7 @@ class _MeetingPageState extends State<MeetingPage> {
     Object data = {};
     widget._meeting!.getGuests().forEach((element) {
       if (element.getPerson().getId() == item.getId()) {
-        data = {
-          'id': element.getId()
-        };
+        data = {'id': element.getId()};
       }
     });
     if (data == {}) {
@@ -113,11 +113,10 @@ class _MeetingPageState extends State<MeetingPage> {
     List<String> time = datetime[1].split(':');
     data = {
       'link': _linkController.text,
-      'datetime': '${date[2]}-${date[1]}-${date[0]}T${time[0]}:${time[1]}:${time[2]}',
+      'datetime':
+          '${date[2]}-${date[1]}-${date[0]}T${time[0]}:${time[1]}:${time[2]}',
       'category': _categoryController,
-      'project': {
-        'id': _projectController!.getId()
-      },
+      'project': {'id': _projectController!.getId()},
       'description': _descriptionController.text
     };
     http.Response response;
@@ -125,9 +124,7 @@ class _MeetingPageState extends State<MeetingPage> {
       data['guests'] = List<Object>.from(
         _chosenPeople.map(
           (element) => {
-            'person': {
-              'id': element.getId()
-            },
+            'person': {'id': element.getId()},
             'category': 'DEFAULT'
           },
         ),
@@ -180,7 +177,8 @@ class _MeetingPageState extends State<MeetingPage> {
   void _setInfo() {
     setState(() {
       _linkController.text = widget._meeting!.getLink();
-      _datetimeController.text = widget._meeting!.getDatetime().toString().split('.')[0];
+      _datetimeController.text =
+          widget._meeting!.getDatetime().toString().split('.')[0];
       for (var element in _projects) {
         if (element.getId() == widget._meeting!.getProject().getId()) {
           _projectController = element;
@@ -226,7 +224,8 @@ class _MeetingPageState extends State<MeetingPage> {
   }
 
   Widget _getDatetimeField() {
-    var maskFormatter = MaskTextInputFormatter(mask: '##/##/#### ##:##:##', filter: { "#": RegExp(r'[0-9]') });
+    var maskFormatter = MaskTextInputFormatter(
+        mask: '##/##/#### ##:##:##', filter: {"#": RegExp(r'[0-9]')});
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Data e Hora *',

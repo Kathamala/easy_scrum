@@ -40,7 +40,7 @@ class PersonHelper {
     Database? personDb = await db;
     if (personDb != null) {
       List<Map> maps = await personDb.query('person', columns: ['personId']);
-      if (maps.length == 1) {
+      if (maps.isNotEmpty) {
         return maps.first['personId'];
       }
     }

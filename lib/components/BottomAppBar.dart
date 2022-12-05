@@ -8,7 +8,10 @@ import '../pages/profile/profile.dart';
 
 class BottomAppBarEasyScrum extends StatelessWidget {
   final String? currentScreen;
-  const BottomAppBarEasyScrum({Key? key, this.currentScreen}) : super(key: key);
+  final Function(void)? reflesh;
+
+  const BottomAppBarEasyScrum({Key? key, this.currentScreen, this.reflesh})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +36,11 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                 onPressed: () {
                   if (currentScreen != "home") {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
                   }
                 },
               ),
@@ -43,9 +48,11 @@ class BottomAppBarEasyScrum extends StatelessWidget {
                 onPressed: () {
                   if (currentScreen != "project-creation") {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProjectCreationPage()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProjectCreationPage(),
+                      ),
+                    ).then((value) => reflesh!(value));
                   }
                 },
                 child: Icon(
