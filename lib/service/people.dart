@@ -34,8 +34,17 @@ class PeopleService {
         {'email': email, 'newPassword': newPassword});
   }
 
-  static Uri getPeople(int personId) {
-    return Uri.http(ApiService.getEndpoint(), '$_controller/$personId');
+  static Uri getPersonByNickname(String nickname) {
+    return Uri.http(ApiService.getEndpoint(), '$_controller/nickname', {
+      'nickname': nickname,
+    });
+  }
+
+  static Uri getPeople(int limit, int page) {
+    return Uri.http(ApiService.getEndpoint(), _controller, {
+      'limit': '$limit',
+      'page': '$page',
+    });
   }
 
   static Uri postPeople() {

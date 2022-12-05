@@ -249,7 +249,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProjectMembersPage(),
+                          builder: (context) => ProjectMembersPage(currentProject: widget.currentProject),
                         ),
                       );
                     },

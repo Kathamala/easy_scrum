@@ -1,43 +1,35 @@
 // ignore_for_file: file_names
-
+import 'dart:convert';
+import 'package:easy_scrum/models/participant.dart';
+import 'package:easy_scrum/service/participation.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_scrum/design/colors.dart';
-import 'package:easy_scrum/components/TopAppBar.dart';
+import 'package:http/http.dart' as http;
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/components/Error.dart';
+import 'package:easy_scrum/components/TopAppBar.dart';
+import 'package:easy_scrum/design/colors.dart';
+import 'package:easy_scrum/models/developer.dart';
+import 'package:easy_scrum/models/person.dart';
+import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/models/project_member.dart';
+import 'package:easy_scrum/service/people.dart';
 
 class ProjectMembersPage extends StatefulWidget {
-  const ProjectMembersPage({Key? key}) : super(key: key);
+  final Project currentProject;
+
+  const ProjectMembersPage({Key? key, required this.currentProject})
+      : super(key: key);
 
   @override
   State<ProjectMembersPage> createState() => _ProjectMembersPageState();
 }
 
 class _ProjectMembersPageState extends State<ProjectMembersPage> {
-  final List<ProjectMember> _allMembers = [];
-  List<ProjectMember> _members = [];
+  List<Developer> _allMembers = [];
+  List<Developer> _members = [];
 
-  late TextEditingController nomeController = TextEditingController();
+  final TextEditingController _nicknameController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  String cargoNovoIntegrante = "";
-  List checkListItems = [
-    {
-      "id": 0,
-      "value": true,
-      "title": "Scrum Master",
-    },
-    {
-      "id": 1,
-      "value": false,
-      "title": "Product Owner",
-    },
-    {
-      "id": 2,
-      "value": false,
-      "title": "Colaborador",
-    }
-  ];
 
   // Feature to control deletion
   ProjectMember _lastRemoved = ProjectMember(-1, '', '', -1, '');
@@ -51,26 +43,50 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
     await Future.delayed(const Duration(seconds: 1));
   }
 
-  // TO-DO: to integrate
-  Future<void> _addMember(String nome, String cargo) async {
-    _allMembers.add(ProjectMember(-1, nome, '', -1, cargo));
-    Navigator.pop(context);
-    setState(() {
-      _members = [..._allMembers];
-    });
-    formKey.currentState!.reset();
+  Future<Person?> _getPerson() async {
+    var response = await http
+        .get(PeopleService.getPersonByNickname(_nicknameController.text));
+    if (response.statusCode == 200) {
+      return (Person.fromJson(json.decode(response.body)));
+    } else {
+      ErrorHandling.getModalBottomSheet(context, response);
+    }
+    return null;
   }
 
-  Future<void> _alterarCargo(int index, String cargo) async {
-    _allMembers[index].setRole(cargo);
-    Navigator.pop(context);
-    setState(() {});
+  Future<void> _addMember() async {
+    Person? person = await _getPerson();
+    if (person != null) {
+      Map<String, Object?> data = {
+        'developer': {
+          'person': {'id': person.getId()}
+        },
+        'status': 'DEFAULT'
+      };
+      var response = await http.post(
+        ParticipantService.postParticipant(),
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+      if (response.statusCode == 200) {
+        setState(() {
+          _allMembers.add(Participant.fromJson(json.decode(response.body)).getDeveloper());
+        });
+        formKey.currentState!.reset();
+        Navigator.pop(context);
+      } else {
+        ErrorHandling.getModalBottomSheet(context, response);
+      }
+    }
   }
 
   // TO-DO: to integrate
   Future<void> _remove(int index) async {
     setState(() {
-      _lastRemoved = _members[index];
+      // _lastRemoved = _members[index];
       _lastRemovedPos = index;
       _members.removeAt(index);
     });
@@ -79,7 +95,7 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
   // TO-DO: to integrate
   Future<void> _cancelRemove() async {
     setState(() {
-      _members.insert(_lastRemovedPos, _lastRemoved);
+      // _members.insert(_lastRemovedPos, _lastRemoved);
     });
   }
 
@@ -102,12 +118,12 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
             backgroundColor: AppColors.primaryPurple,
             child: const Icon(Icons.person),
           ),
-          title: Text(_members[index].getName()),
-          subtitle: Text(_members[index].getRole()),
+          title: Text(_members[index].getPerson().getName()),
+          subtitle: const Text('Desenvolvedor'),
           trailing: GestureDetector(
-            onTapDown: (TapDownDetails details) {
-              _showChangeRoleDialog(index);
-            },
+            // onTapDown: (TapDownDetails details) {
+            //   _showChangeRoleDialog(index);
+            // },
             child: const Icon(Icons.edit),
           )),
       onDismissed: (direction) {
@@ -163,9 +179,6 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
   }
 
   void _showAddDialog() {
-    String avisoCheckbox = '';
-    bool marcouUmaCheckbox = false;
-
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -185,12 +198,11 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
                               decoration: const InputDecoration(
-                                  hintText: 'Nome do novo integrante'),
-                              controller: nomeController,
+                                  hintText: 'Nome do usuário'),
+                              controller: _nicknameController,
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  avisoCheckbox = '';
-                                  return 'Insira o nome do novo integrante';
+                                  return 'Insira o nome do usuário';
                                 } else {
                                   return null;
                                 }
@@ -198,50 +210,8 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
                               style: const TextStyle(fontSize: 14),
                             ),
                           ),
-                          const Padding(
-                              padding: EdgeInsets.fromLTRB(0, 24, 0, 24),
-                              child:
-                                  Text('Escolha o cargo do novo integrante')),
                         ],
                       ),
-                      Column(
-                        children: List.generate(
-                          checkListItems.length,
-                          (index) => CheckboxListTile(
-                            controlAffinity: ListTileControlAffinity.leading,
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            title: Text(
-                              checkListItems[index]["title"],
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                              ),
-                            ),
-                            value: checkListItems[index]["value"],
-                            onChanged: (value) {
-                              setState(() {
-                                for (var element in checkListItems) {
-                                  element["value"] = false;
-                                }
-                                checkListItems[index]["value"] = value;
-                                cargoNovoIntegrante =
-                                    "${checkListItems[index]["title"]}";
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          avisoCheckbox,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.red,
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),
@@ -257,115 +227,7 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
                       foregroundColor: AppColors.primaryPurple,
                     ),
                     onPressed: () {
-                      for (var element in checkListItems) {
-                        if (element["value"] == true) {
-                          marcouUmaCheckbox = true;
-                        }
-                      }
-                      if (marcouUmaCheckbox) {
-                        if (formKey.currentState!.validate()) {
-                          avisoCheckbox = '';
-                          marcouUmaCheckbox = false;
-
-                          setState(() {});
-
-                          _addMember(nomeController.text, cargoNovoIntegrante);
-                          nomeController.text = '';
-                        }
-                      } else {
-                        avisoCheckbox = 'Escolha um cargo';
-                        setState(() {});
-                      }
-                    })
-              ],
-            );
-          });
-        });
-  }
-
-  void _showChangeRoleDialog(int index) {
-    String avisoCheckbox = '';
-    bool marcouUmaCheckbox = false;
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(builder: (context, setState) {
-            return AlertDialog(
-              title: Text(
-                  'Escolha o novo cargo de ' + _allMembers[index].getName()),
-              content: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    Column(
-                      children: List.generate(
-                        checkListItems.length,
-                        (index) => CheckboxListTile(
-                          controlAffinity: ListTileControlAffinity.leading,
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                          title: Text(
-                            checkListItems[index]["title"],
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.black,
-                            ),
-                          ),
-                          value: checkListItems[index]["value"],
-                          onChanged: (value) {
-                            setState(() {
-                              for (var element in checkListItems) {
-                                element["value"] = false;
-                              }
-                              checkListItems[index]["value"] = value;
-                              cargoNovoIntegrante =
-                                  "${checkListItems[index]["title"]}";
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        avisoCheckbox,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.red,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Cancelar'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                TextButton(
-                    child: const Text('Alterar'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: AppColors.primaryPurple,
-                    ),
-                    onPressed: () {
-                      for (var element in checkListItems) {
-                        if (element["value"] == true) {
-                          marcouUmaCheckbox = true;
-                        }
-                      }
-                      if (marcouUmaCheckbox) {
-                        avisoCheckbox = '';
-                        marcouUmaCheckbox = false;
-
-                        setState(() {});
-
-                        _alterarCargo(index, cargoNovoIntegrante);
-                      } else {
-                        avisoCheckbox = 'Escolha um cargo';
-                        setState(() {});
-                      }
+                      _addMember();
                     })
               ],
             );
@@ -386,8 +248,18 @@ class _ProjectMembersPageState extends State<ProjectMembersPage> {
   @override
   void initState() {
     super.initState();
-    _allMembers.add(ProjectMember(1, 'Alex', '', 1, 'Scrum Master'));
-    _allMembers.add(ProjectMember(2, 'Antonio', '', 2, 'Product Owner'));
+    List<Developer> members = [];
+    widget.currentProject.getTeams().forEach((team) {
+      team.getParticipants().forEach((participant) {
+        if (members
+            .where((member) =>
+                member.getId() == participant.getDeveloper().getId())
+            .isEmpty) {
+          members.add(participant.getDeveloper());
+        }
+      });
+    });
+    _allMembers = members;
     _members = [..._allMembers];
   }
 

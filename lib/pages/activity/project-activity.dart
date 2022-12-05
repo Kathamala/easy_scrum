@@ -1,3 +1,9 @@
+import 'package:easy_scrum/models/developer.dart';
+import 'package:easy_scrum/models/person.dart';
+import 'package:easy_scrum/models/product_backlog.dart';
+import 'package:easy_scrum/models/project.dart';
+import 'package:easy_scrum/models/scrum_master.dart';
+import 'package:easy_scrum/models/user_story.dart';
 import 'package:easy_scrum/pages/activity/activity-creation.dart';
 import 'package:easy_scrum/pages/activity/activity-details.dart';
 import 'package:flutter/material.dart';
@@ -97,19 +103,19 @@ class _ProjectActivitiesPageState extends State<ProjectActivitiesPage> {
   void initState() {
     super.initState();
     _activities.add(
-      Activity(1, null, null, null, 'Elaborar modelo EER'),
+      Activity(1, Project(0, '', DateTime.now(), DateTime.now(), '', '', ScrumMaster(0, Person(0, '', '', '', '', '')), ProductBacklog(0, {}), {}, '', ''), UserStory(0, '', '', '', ''), Developer(0, Person(0, '', '', '', '', '')), 'Elaborar modelo EER'),
     );
     _activities.add(
-      Activity(2, null, null, null, 'Definir arquitetura da API'),
+      Activity(2, Project(0, '', DateTime.now(), DateTime.now(), '', '', ScrumMaster(0, Person(0, '', '', '', '', '')), ProductBacklog(0, {}), {}, '', ''), UserStory(0, '', '', '', ''), Developer(0, Person(0, '', '', '', '', '')), 'Definir arquitetura da API'),
     );
     _activities.add(
-      Activity(3, null, null, null, 'Criar estrutura da API'),
+      Activity(3, Project(0, '', DateTime.now(), DateTime.now(), '', '', ScrumMaster(0, Person(0, '', '', '', '', '')), ProductBacklog(0, {}), {}, '', ''), UserStory(0, '', '', '', ''), Developer(0, Person(0, '', '', '', '', '')), 'Criar estrutura da API'),
     );
     _activities.add(
-      Activity(4, null, null, null, 'Documentar problema e solução'),
+      Activity(4, Project(0, '', DateTime.now(), DateTime.now(), '', '', ScrumMaster(0, Person(0, '', '', '', '', '')), ProductBacklog(0, {}), {}, '', ''), UserStory(0, '', '', '', ''), Developer(0, Person(0, '', '', '', '', '')), 'Documentar problema e solução'),
     );
     _activities.add(
-      Activity(5, null, null, null, 'Prototipar telas'),
+      Activity(5, Project(0, '', DateTime.now(), DateTime.now(), '', '', ScrumMaster(0, Person(0, '', '', '', '', '')), ProductBacklog(0, {}), {}, '', ''), UserStory(0, '', '', '', ''), Developer(0, Person(0, '', '', '', '', '')), 'Prototipar telas'),
     );
   }
 
