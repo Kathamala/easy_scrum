@@ -14,10 +14,6 @@ import 'package:easy_scrum/pages/project/project-details.dart';
 import 'package:easy_scrum/service/meeting.dart';
 import 'package:easy_scrum/service/project.dart';
 import 'package:easy_scrum/utils/date.dart';
-import 'package:easy_scrum/models/company.dart';
-import 'package:easy_scrum/models/product_backlog.dart';
-import 'package:easy_scrum/models/product_owner.dart';
-import 'package:easy_scrum/models/scrum_master.dart';
 
 class HomePage extends StatefulWidget {
   final Person? loggedUser;
@@ -263,30 +259,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    _projects.add(
-      Project(
-        1,
-        'Easy Scrum',
-        DateTime.now(),
-        DateTime.now(),
-        '',
-        ProductOwner(
-          1,
-          Person(1, '', '', '', '', ''),
-          Company(1, '', ''),
-        ),
-        ScrumMaster(
-          1,
-          Person(1, '', '', '', '', ''),
-        ),
-        ProductBacklog(1, {}),
-        {},
-        '',
-        '',
-      ),
-    );
-
     _reflesh();
   }
 
@@ -307,8 +279,12 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         actions: _getActions(),
       ),
-      bottomNavigationBar: const BottomAppBarEasyScrum(
+      bottomNavigationBar: BottomAppBarEasyScrum(
         currentScreen: "home",
+        reflesh: (_) {
+          print('Aqqq');
+          _reflesh();
+        },
       ),
       body: SingleChildScrollView(
         child: Container(

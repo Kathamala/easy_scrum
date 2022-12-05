@@ -19,7 +19,7 @@ class ErrorHandling {
                 Padding(
                   padding: const EdgeInsets.only(top: 40),
                   child: Text(
-                    json.decode(response.body)["message"],
+                    json.decode(response.body)["message"] ?? 'Houve um erro interno',
                     style: TextStyle(
                       color: AppColors.primaryPurple,
                       fontSize: 20,

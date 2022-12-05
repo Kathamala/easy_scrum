@@ -1,10 +1,12 @@
+// ignore_for_file: file_names
+
 import 'dart:convert';
+import 'package:easy_scrum/utils/number.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
 import 'package:easy_scrum/components/Error.dart';
-//import 'package:easy_scrum/models/project.dart';
 import 'package:easy_scrum/service/project.dart';
 import 'package:easy_scrum/helpers/person.dart';
 
@@ -18,14 +20,11 @@ class ProjectCreationPage extends StatefulWidget {
 class _ProjectCreationPageState extends State<ProjectCreationPage> {
   final PersonHelper _helper = PersonHelper();
 
-  TextEditingController nomeController = TextEditingController();
-  TextEditingController clienteController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController quantidadeTimesController = TextEditingController();
-  DateTime startDate = DateTime.now();
-  DateTime deadlineDate = DateTime.now();
-
-  //Project? _projectController;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _clientController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  DateTime _startDate = DateTime.now();
+  DateTime _deadlineDate = DateTime.now();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -35,27 +34,21 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
   }
 
   Future<void> _createProject() async {
-    Map<String, Object?> data;
-    data = {
-      //'id': '',
-      'name': nomeController.text,
-      'startDate':
-          '${startDate.year}-${startDate.month}-${startDate.day}T${startDate.hour}:${startDate.minute}:${startDate.second}',
-      'deadline':
-          '${deadlineDate.year}-${deadlineDate.month}-${deadlineDate.day}T${deadlineDate.hour}:${deadlineDate.minute}:${deadlineDate.second}',
-      'status': '',
-      /*'productOwner': {'id': await _helper.getPerson()},
-      'scrumMaster': {'id': await _helper.getPerson()},*/
-      'productOwner': {'id': ''},
-      'scrumMaster': {'id': ''},
-      'productBacklog': {},
-      'teams': {},
+    Map<String, Object?> data = {
+      'name': _nameController.text,
+      'startDate': '${Number.formatNumber(_startDate.year)}-${Number.formatNumber(_startDate.month)}-${Number.formatNumber(_startDate.day)}T${Number.formatNumber(_startDate.hour)}:${Number.formatNumber(_startDate.minute)}:${Number.formatNumber(_startDate.second)}',
+      'deadline': '${Number.formatNumber(_deadlineDate.year)}-${Number.formatNumber(_deadlineDate.month)}-${Number.formatNumber(_deadlineDate.day)}T${Number.formatNumber(_deadlineDate.hour)}:${Number.formatNumber(_deadlineDate.minute)}:${Number.formatNumber(_deadlineDate.second)}',
+      'status': 'DEFAULT',
+      'productOwner': _clientController.text,
+      'scrumMaster': {
+        'person': {'id': await _helper.getPerson()}
+      },
+      'productBacklog': {'stories': []},
+      'teams': [],
       'logo': '',
-      'description': descriptionController.text
+      'description': _descriptionController.text
     };
-    print(data);
-    http.Response response;
-    response = await http.post(
+    var response = await http.post(
       ProjectService.postProject(),
       headers: {
         'accept': '*/*',
@@ -68,17 +61,6 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
     } else {
       ErrorHandling.getModalBottomSheet(context, response);
     }
-    //_resetCampos();
-  }
-
-  void _resetCampos() {
-    nomeController = TextEditingController();
-    clienteController = TextEditingController();
-    descriptionController = TextEditingController();
-    quantidadeTimesController = TextEditingController();
-    setState(() => startDate = DateTime.now());
-    setState(() => deadlineDate = DateTime.now());
-    formKey.currentState!.reset();
   }
 
   @override
@@ -124,7 +106,7 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                         color: Colors.black,
                         fontSize: 16.0,
                       ),
-                      controller: nomeController,
+                      controller: _nameController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Insira o nome do projeto';
@@ -145,7 +127,7 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                         color: Colors.black,
                         fontSize: 16.0,
                       ),
-                      controller: clienteController,
+                      controller: _clientController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Insira o cliente do projeto';
@@ -166,7 +148,7 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                         ),
                         Expanded(
                           child: Text(
-                            '${startDate.day}/${startDate.month}/${startDate.year}',
+                            '${_startDate.day}/${_startDate.month}/${_startDate.year}',
                             textAlign: TextAlign.left,
                             style: const TextStyle(fontSize: 18.0),
                           ),
@@ -175,14 +157,14 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                           onPressed: () async {
                             DateTime? newDate = await showDatePicker(
                               context: context,
-                              initialDate: startDate,
+                              initialDate: _startDate,
                               firstDate: DateTime(2000),
                               lastDate: DateTime(2100),
                             );
                             if (newDate == null) {
                               return;
                             }
-                            setState(() => startDate = newDate);
+                            setState(() => _startDate = newDate);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.purple,
@@ -202,7 +184,7 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                         ),
                         Expanded(
                           child: Text(
-                              '${deadlineDate.day}/${deadlineDate.month}/${deadlineDate.year}',
+                              '${_deadlineDate.day}/${_deadlineDate.month}/${_deadlineDate.year}',
                               textAlign: TextAlign.left,
                               style: const TextStyle(fontSize: 18.0)),
                         ),
@@ -210,7 +192,7 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                             onPressed: () async {
                               DateTime? newDate = await showDatePicker(
                                 context: context,
-                                initialDate: deadlineDate,
+                                initialDate: _deadlineDate,
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
@@ -219,7 +201,7 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                                 return;
                               }
 
-                              setState(() => deadlineDate = newDate);
+                              setState(() => _deadlineDate = newDate);
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.purple),
@@ -239,31 +221,10 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                         color: Colors.black,
                         fontSize: 16.0,
                       ),
-                      controller: descriptionController,
+                      controller: _descriptionController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Insira a descrição do projeto';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 10.0)),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Quantidade de times *',
-                        labelStyle: TextStyle(color: Colors.black),
-                      ),
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16.0,
-                      ),
-                      controller: quantidadeTimesController,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Insira a quantidade de times do projeto';
                         } else {
                           return null;
                         }

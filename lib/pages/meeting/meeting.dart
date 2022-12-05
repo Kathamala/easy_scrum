@@ -46,8 +46,6 @@ class _MeetingPageState extends State<MeetingPage> {
     if (response.statusCode == 200) {
       Project project = Project.fromJson(json.decode(response.body));
       List<Item> people = [];
-      people.add(Item(project.getProductOwner().getPerson().getId(),
-          project.getProductOwner().getPerson().getName()));
       people.add(Item(project.getScrumMaster().getPerson().getId(),
           project.getScrumMaster().getPerson().getName()));
       project.getTeams().forEach((item) {

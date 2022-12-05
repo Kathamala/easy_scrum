@@ -17,36 +17,6 @@ class ProjectService {
     });
   }
 
-  /*static Uri createProject(
-    String name,
-    String description,
-    DateTime startDate,
-    DateTime deadline,
-  ) {
-    return Uri.http(ApiService.getEndpoint(), '$_controller/create', {
-      'name': name,
-      'description': description,
-      'startDate': startDate,
-      'deadline': deadline,
-    });
-  }
-
-  static Uri editProject(
-    int projectId,
-    String name,
-    String description,
-    DateTime startDate,
-    DateTime deadline,
-  ) {
-    return Uri.http(ApiService.getEndpoint(), '$_controller/$projectId', {
-      'projectId': projectId,
-      'name': name,
-      'description': description,
-      'startDate': startDate,
-      'deadline': deadline,
-    });
-  }*/
-
   static Uri postProject() {
     return Uri.http(ApiService.getEndpoint(), _controller);
   }
