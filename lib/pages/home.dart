@@ -14,6 +14,10 @@ import 'package:easy_scrum/pages/project/project-details.dart';
 import 'package:easy_scrum/service/meeting.dart';
 import 'package:easy_scrum/service/project.dart';
 import 'package:easy_scrum/utils/date.dart';
+import 'package:easy_scrum/models/company.dart';
+import 'package:easy_scrum/models/product_backlog.dart';
+import 'package:easy_scrum/models/product_owner.dart';
+import 'package:easy_scrum/models/scrum_master.dart';
 
 class HomePage extends StatefulWidget {
   final Person? loggedUser;
@@ -29,7 +33,8 @@ class _HomePageState extends State<HomePage> {
   List<Meeting> _meetings = [];
 
   Future<void> _findProjects() async {
-    var response = await http.get(ProjectService.getProjectsByPerson(await _helper.getPerson(), 10, 0));
+    var response = await http.get(
+        ProjectService.getProjectsByPerson(await _helper.getPerson(), 10, 0));
     if (response.statusCode == 200) {
       Iterable list = json.decode(response.body);
       setState(() {
@@ -42,7 +47,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _findMeetings() async {
-    var response = await http.get(MeetingService.getMeetingsToday(await _helper.getPerson()));
+    var response = await http
+        .get(MeetingService.getMeetingsToday(await _helper.getPerson()));
     if (response.statusCode == 200) {
       Iterable list = json.decode(response.body);
       setState(() {
@@ -63,7 +69,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const ProjectDetailsPage(),
+        builder: (context) => ProjectDetailsPage(currentProject: project),
       ),
     ).then((value) => _reflesh());
   }
@@ -257,6 +263,30 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
+    _projects.add(
+      Project(
+        1,
+        'Easy Scrum',
+        DateTime.now(),
+        DateTime.now(),
+        '',
+        ProductOwner(
+          1,
+          Person(1, '', '', '', '', ''),
+          Company(1, '', ''),
+        ),
+        ScrumMaster(
+          1,
+          Person(1, '', '', '', '', ''),
+        ),
+        ProductBacklog(1, {}),
+        {},
+        '',
+        '',
+      ),
+    );
+
     _reflesh();
   }
 

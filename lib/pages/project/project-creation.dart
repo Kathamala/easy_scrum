@@ -1,8 +1,12 @@
-// ignore_for_file: file_names, avoid_print
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:easy_scrum/design/colors.dart';
 import 'package:easy_scrum/components/BottomAppBar.dart';
+import 'package:easy_scrum/components/Error.dart';
+//import 'package:easy_scrum/models/project.dart';
+import 'package:easy_scrum/service/project.dart';
+import 'package:easy_scrum/helpers/person.dart';
 
 class ProjectCreationPage extends StatefulWidget {
   const ProjectCreationPage({Key? key}) : super(key: key);
@@ -12,12 +16,16 @@ class ProjectCreationPage extends StatefulWidget {
 }
 
 class _ProjectCreationPageState extends State<ProjectCreationPage> {
+  final PersonHelper _helper = PersonHelper();
+
   TextEditingController nomeController = TextEditingController();
   TextEditingController clienteController = TextEditingController();
-  TextEditingController prazoController = TextEditingController();
-  TextEditingController duracaoSprintController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   TextEditingController quantidadeTimesController = TextEditingController();
-  DateTime date = DateTime.now();
+  DateTime startDate = DateTime.now();
+  DateTime deadlineDate = DateTime.now();
+
+  //Project? _projectController;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -26,23 +34,50 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
     super.initState();
   }
 
-  void _createProject() {
-    print('Nome: ' + nomeController.text + '\n');
-    print('Cliente: ' + clienteController.text + '\n');
-    print('Data de início: ' + date.toString() + '\n');
-    print('Prazo: ' + prazoController.text + '\n');
-    print('Duração do sprint: ' + duracaoSprintController.text + '\n');
-    print('Quantidade de times: ' + quantidadeTimesController.text + '\n');
-    _resetCampos();
+  Future<void> _createProject() async {
+    Map<String, Object?> data;
+    data = {
+      //'id': '',
+      'name': nomeController.text,
+      'startDate':
+          '${startDate.year}-${startDate.month}-${startDate.day}T${startDate.hour}:${startDate.minute}:${startDate.second}',
+      'deadline':
+          '${deadlineDate.year}-${deadlineDate.month}-${deadlineDate.day}T${deadlineDate.hour}:${deadlineDate.minute}:${deadlineDate.second}',
+      'status': '',
+      /*'productOwner': {'id': await _helper.getPerson()},
+      'scrumMaster': {'id': await _helper.getPerson()},*/
+      'productOwner': {'id': ''},
+      'scrumMaster': {'id': ''},
+      'productBacklog': {},
+      'teams': {},
+      'logo': '',
+      'description': descriptionController.text
+    };
+    print(data);
+    http.Response response;
+    response = await http.post(
+      ProjectService.postProject(),
+      headers: {
+        'accept': '*/*',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+    if (response.statusCode == 200) {
+      Navigator.of(context).pop();
+    } else {
+      ErrorHandling.getModalBottomSheet(context, response);
+    }
+    //_resetCampos();
   }
 
   void _resetCampos() {
     nomeController = TextEditingController();
     clienteController = TextEditingController();
-    prazoController = TextEditingController();
-    duracaoSprintController = TextEditingController();
+    descriptionController = TextEditingController();
     quantidadeTimesController = TextEditingController();
-    setState(() => date = DateTime.now());
+    setState(() => startDate = DateTime.now());
+    setState(() => deadlineDate = DateTime.now());
     formKey.currentState!.reset();
   }
 
@@ -131,7 +166,7 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                         ),
                         Expanded(
                           child: Text(
-                            '${date.day}/${date.month}/${date.year}',
+                            '${startDate.day}/${startDate.month}/${startDate.year}',
                             textAlign: TextAlign.left,
                             style: const TextStyle(fontSize: 18.0),
                           ),
@@ -140,14 +175,14 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                           onPressed: () async {
                             DateTime? newDate = await showDatePicker(
                               context: context,
-                              initialDate: date,
+                              initialDate: startDate,
                               firstDate: DateTime(2000),
                               lastDate: DateTime(2100),
                             );
                             if (newDate == null) {
                               return;
                             }
-                            setState(() => date = newDate);
+                            setState(() => startDate = newDate);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.purple,
@@ -158,31 +193,45 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                       ],
                     ),
                     const Padding(padding: EdgeInsets.only(top: 10.0)),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Prazo (em semanas) *',
-                        labelStyle: TextStyle(color: Colors.black),
-                      ),
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16.0,
-                      ),
-                      controller: prazoController,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Insira o prazo do projeto';
-                        } else {
-                          return null;
-                        }
-                      },
+                    Row(
+                      children: <Widget>[
+                        const Expanded(
+                          child: Text('Deadline:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(fontSize: 16.0)),
+                        ),
+                        Expanded(
+                          child: Text(
+                              '${deadlineDate.day}/${deadlineDate.month}/${deadlineDate.year}',
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(fontSize: 18.0)),
+                        ),
+                        ElevatedButton(
+                            onPressed: () async {
+                              DateTime? newDate = await showDatePicker(
+                                context: context,
+                                initialDate: deadlineDate,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+
+                              if (newDate == null) {
+                                return;
+                              }
+
+                              setState(() => deadlineDate = newDate);
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.purple),
+                            child: const Icon(Icons.edit_calendar,
+                                color: Colors.white))
+                      ],
                     ),
                     const Padding(padding: EdgeInsets.only(top: 10.0)),
                     TextFormField(
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
-                        labelText: 'Duração do sprint (em dias) *',
+                        labelText: 'Descrição do projeto *',
                         labelStyle: TextStyle(color: Colors.black),
                       ),
                       textAlign: TextAlign.left,
@@ -190,10 +239,10 @@ class _ProjectCreationPageState extends State<ProjectCreationPage> {
                         color: Colors.black,
                         fontSize: 16.0,
                       ),
-                      controller: duracaoSprintController,
+                      controller: descriptionController,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Insira a duração do sprint do projeto';
+                          return 'Insira a descrição do projeto';
                         } else {
                           return null;
                         }
